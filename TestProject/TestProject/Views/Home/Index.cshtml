@@ -1,8 +1,26 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<TestProject.Models.Classes>
+@{
+    //ViewData["Title"] = "Список классов";
+    Layout = null;
 }
+<!Doctype html>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<html>
+<head>
+    <title>Электронный дневник</title>
+</head>
+<body>
+    <h3>Классы</h3>
+    <table>
+        <tr>
+            <td>Название класса</td>
+        </tr>
+        @foreach (var stclass in Model)
+        {
+            <tr>
+                <td>@stclass.Name</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
