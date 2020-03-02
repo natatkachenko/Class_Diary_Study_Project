@@ -27,7 +27,7 @@ namespace TestProject
         {
             string connection =
                 Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<DiaryContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<DiaryDBContext>(options => options.UseSqlServer(connection));
 
             services.AddControllersWithViews();
         }

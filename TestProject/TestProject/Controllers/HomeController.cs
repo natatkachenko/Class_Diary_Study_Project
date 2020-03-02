@@ -11,8 +11,8 @@ namespace TestProject.Controllers
 {
     public class HomeController : Controller
     {
-        DiaryContext db;
-        public HomeController(DiaryContext context)
+        DiaryDBContext db;
+        public HomeController(DiaryDBContext context)
         {
             db = context;
         }
