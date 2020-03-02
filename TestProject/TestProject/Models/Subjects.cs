@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace TestProject.Models
 {
-    public partial class Classes
+    public partial class Subjects
     {
-        public string ClassName { get; set; }
+        public string SubjectName { get; set; }
     }
 }
