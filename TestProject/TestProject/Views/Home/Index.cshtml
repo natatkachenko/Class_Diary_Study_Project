@@ -1,26 +1,17 @@
 ﻿@model IEnumerable<TestProject.Models.Classes>
 @{
-    //ViewData["Title"] = "Список классов";
-    Layout = null;
+    ViewBag.Title = "Электронный дневник";
 }
-<!Doctype html>
-
-<html>
-<head>
-    <title>Электронный дневник</title>
-</head>
-<body>
-    <h3>Классы</h3>
-    <table>
+<h3>Классы</h3>
+<table class="table">
+    <tr>
+        <td>Название класса</td>
+    </tr>
+    @foreach (var stclass in Model)
+    {
         <tr>
-            <td>Название класса</td>
+            <td>@stclass.ClassName</td>
         </tr>
-        @foreach (var stclass in Model)
-        {
-            <tr>
-                <td>@stclass.ClassName</td>
-            </tr>
-        }
-    </table>
-</body>
-</html>
+    }
+</table>
+<a asp-action="Add">Добавить</a>

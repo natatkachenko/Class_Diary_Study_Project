@@ -1,0 +1,15 @@
+﻿@model TestProject.Models.Classes
+@{
+    ViewBag.Title = "Добавление нового класса";
+}
+
+<form asp-action="add" asp-controller="home">
+    <div class="form-group">
+        <label asp-for="ClassName" class="custom-control-label">
+        Наименование класса</label>
+        <input type="text" asp-for="ClassName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Добавить" />
+    </div>
+</form>
