@@ -38,5 +38,37 @@ namespace TestProject.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+        // удаление класса
+        [HttpGet]
+        [ActionName("Delete")]
+        public async Task<IActionResult> ConfirmDelete(string classname)
+        {
+            if (classname != null)
+            {
+                Classes classes =
+                    await db.Classes.FirstOrDefaultAsync(c => c.ClassName == classname);
+                if (classes != null)
+                    return View(classes);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string classname)
+        {
+            if (classname != null)
+            {
+                Classes classes =
+                    await db.Classes.FirstOrDefaultAsync(c => c.ClassName == classname);
+                if (classes != null)
+                {
+                    db.Classes.Remove(classes);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+            }
+            return NotFound();
+        }
     }
 }
