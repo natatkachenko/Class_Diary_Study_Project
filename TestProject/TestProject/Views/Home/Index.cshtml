@@ -11,7 +11,9 @@
     {
         <tr>
             <td>@stclass.ClassName</td>
-            <td><a asp-action="Delete" asp-controller="Home" asp-route="@stclass.ClassName">Удалить</a></td>
+            <td>
+            <a asp-action="Delete" asp-controller="Home" asp-route-classname="@stclass.ClassName">Удалить</a>
+            </td>
         </tr>
     }
 </table>

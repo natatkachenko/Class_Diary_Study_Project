@@ -39,10 +39,9 @@ namespace TestProject.Controllers
             return RedirectToAction("Index");
         }
 
-        // удаление класса
+        // показ удаляемого класса
         [HttpGet]
-        [ActionName("Delete")]
-        public async Task<IActionResult> ConfirmDelete(string classname)
+        public async Task<IActionResult> Delete(string classname)
         {
             if (classname != null)
             {
@@ -54,19 +53,15 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
+        // удаление класса из бд
         [HttpPost]
-        public async Task<IActionResult> Delete(string classname)
+        public async Task<IActionResult> Delete(Classes classes)
         {
-            if (classname != null)
+            if (classes != null)
             {
-                Classes classes =
-                    await db.Classes.FirstOrDefaultAsync(c => c.ClassName == classname);
-                if (classes != null)
-                {
-                    db.Classes.Remove(classes);
-                    await db.SaveChangesAsync();
-                    return RedirectToAction("Index");
-                }
+                db.Classes.Remove(classes);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
             return NotFound();
         }
