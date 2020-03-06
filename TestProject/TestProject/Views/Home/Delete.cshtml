@@ -11,7 +11,7 @@
         </dd>
     </dl>
     <div>
-        <form asp-controller="Home" asp-action="Delete" method="post">
+        <form asp-controller="Home" asp-action="Delete" asp-route-classname="@Model.ClassName">
             <div class="form-group">
                 <input type="submit" value="Удалить" />
             </div>
