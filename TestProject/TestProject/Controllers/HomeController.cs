@@ -4,12 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
 
 namespace TestProject.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         DiaryDBContext db;
@@ -21,7 +23,11 @@ namespace TestProject.Controllers
         // вывод списка классов
         public async Task<IActionResult> Index()
         {
-            return View(await db.Classes.ToListAsync());
+            if (User.Identity.IsAuthenticated)
+            {
+                return View(await db.Classes.ToListAsync());
+            }
+            return Content("Пользователь не аутентифицирован");
         }
 
         // вызов формы для добавления класса
