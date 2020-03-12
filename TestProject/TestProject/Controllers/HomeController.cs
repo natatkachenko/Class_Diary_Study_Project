@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
+using Microsoft.Data.SqlClient;
 
 namespace TestProject.Controllers
 {
@@ -68,6 +69,17 @@ namespace TestProject.Controllers
                 db.Classes.Remove(classes);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
+            }
+            return NotFound();
+        }
+
+        // вывод списка студентов выбранного класса
+        public async Task<IActionResult> Students(string classname)
+        {
+            if (classname != null)
+            {
+                var students = await db.Students.FromSqlInterpolated($"Select * From Students Where ClassName={classname}").ToListAsync();
+                return View(students);
             }
             return NotFound();
         }
