@@ -10,7 +10,7 @@
     @foreach (var stclass in Model)
     {
         <tr>
-            <td>@stclass.ClassName</td>
+            <td><a asp-action="Students" asp-controller="Home" asp-route-classname="@stclass.ClassName">@stclass.ClassName</a></td>
             <td>
             <a asp-action="Delete" asp-controller="Home" asp-route-classname="@stclass.ClassName">Удалить</a>
             </td>
