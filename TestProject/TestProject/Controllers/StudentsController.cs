@@ -71,5 +71,7 @@ namespace TestProject.Controllers
             }
             return NotFound();
         }
+
+        int a = 1;
     }
 }
