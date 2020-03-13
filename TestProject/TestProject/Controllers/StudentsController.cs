@@ -71,18 +71,5 @@ namespace TestProject.Controllers
             }
             return NotFound();
         }
-
-        int a = 1;
-        [HttpPost]
-        public async Task<IActionResult> Delete2(Students student)
-        {
-            if (student != null)
-            {
-                db.Students.Remove(student);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return NotFound();
-        }
     }
 }
