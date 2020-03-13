@@ -1,0 +1,25 @@
+﻿@model TestProject.Models.Students
+@{
+    ViewBag.Title = "Удаление ученика";
+}
+
+<div>
+    <dl>
+        <dt>Фамилия</dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>Имя</dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+    </dl>
+    <div>
+        <form asp-controller="Students" asp-action="Delete" asp-route-id="@Model.StudentId">
+            <div class="form-group">
+                <input type="submit" value="Удалить" />
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+﻿@model IEnumerable<TestProject.Models.Students>
+@{
+    ViewBag.Title = "Ученики";
+}
+    <h3>Ученики</h3>
+<table class="table">
+    <tr>
+        <td>Номер</td>
+        <td>Фамилия</td>
+        <td>Имя</td>
+    </tr>
+    @foreach (var student in Model)
+    {
+        <tr>
+            <td>@student.StudentId</td>
+            <td>@student.LastName</td>
+            <td>@student.FirstName</td>
+            <td>
+                <a asp-action="Delete" asp-controller="Students" asp-route-id="@student.StudentId">Удалить</a>
+            </td>
+        </tr>
+    }
+</table>
+<a asp-action="Add">Добавить</a>
