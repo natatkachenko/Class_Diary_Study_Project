@@ -9,7 +9,8 @@ namespace TestProject.Models
         public DiaryDBContext(DbContextOptions<DiaryDBContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            Database.EnsureDeleted(); // удаляем бд со старой схемой
+            Database.EnsureCreated(); // создаем бд с новой схемой
         }
 
         public virtual DbSet<ClassSubject> ClassSubject { get; set; }
@@ -17,6 +18,7 @@ namespace TestProject.Models
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<SubjectGrade> SubjectGrade { get; set; }
         public virtual DbSet<Subjects> Subjects { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
