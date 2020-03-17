@@ -1,0 +1,22 @@
+﻿@model IEnumerable<TestProject.Models.SubjectGrade>
+@{
+    ViewBag.Title = "Оценки ученика";
+}
+    <h3>Оценки ученика</h3>
+<table class="table">
+    <tr>
+        <td>Номер</td>
+        <td>Дата</td>
+        <td>Название предмета</td>
+        <td>Оценка</td>
+    </tr>
+    @foreach (var sbgrade in Model)
+    {
+        <tr>
+            <td>@sbgrade.Id</td>
+            <td>@sbgrade.Date</td>
+            <td>@sbgrade.SubjectName</td>
+            <td><a asp-action="Edit" asp-controller="SubjectGrade" asp-route-subjectname="@sbgrade.SubjectName">@sbgrade.Grade</a></td>
+        </tr>
+    }
+</table>

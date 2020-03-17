@@ -13,7 +13,7 @@
     {
         <tr>
             <td>@student.StudentId</td>
-            <td>@student.LastName</td>
+            <td><a asp-action="Grade" asp-controller="SubjectGrade" asp-route-id="@student.StudentId">@student.LastName</a></td>
             <td>@student.FirstName</td>
             <td>
                 <a asp-action="Delete" asp-controller="Students" asp-route-id="@student.StudentId">Удалить</a>

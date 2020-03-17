@@ -1,0 +1,14 @@
+﻿@model TestProject.Models.SubjectGrade
+@{
+    ViewBag.Title = "Внесение оценки по предмету";
+}
+
+<form asp-action="Edit" asp-controller="SubjectGrade" asp-route-subjectname="@Model.SubjectName">
+    <div class="form-group">
+        <label asp-for="Grade" class="custom-control-label">Укажите оценку:</label>
+        <input type="number" min="1" max="12" value="1" id="Grade" name="Grade" asp-for="Grade" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Сохранить" />
+    </div>
+</form>
