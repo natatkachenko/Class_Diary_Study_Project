@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -46,9 +47,28 @@ namespace TestProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(SubjectGrade sbgrade)
         {
-            db.SubjectGrade.Update(sbgrade);
-            await db.SaveChangesAsync();
+            switch (sbgrade.Date.DayOfWeek)
+            {
+                case DayOfWeek.Saturday:
+                case DayOfWeek.Sunday:
+                    Message();
+                    Thread.Sleep(5000);
+                    break;
+                case DayOfWeek.Monday:
+                case DayOfWeek.Tuesday:
+                case DayOfWeek.Wednesday:
+                case DayOfWeek.Thursday:
+                case DayOfWeek.Friday:
+                    db.SubjectGrade.Update(sbgrade);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Grade");
+            }
             return RedirectToAction("Grade");
+        }
+
+        public string Message()
+        {
+            return "Запрещено вводить оценку в выходной день!";
         }
     }
 }
