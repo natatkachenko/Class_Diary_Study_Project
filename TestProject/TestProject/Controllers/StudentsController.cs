@@ -47,12 +47,12 @@ namespace TestProject.Controllers
 
         // показ удаляемого ученика класса
         [HttpGet]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string classname, int? studentid)
         {
-            if (id != null)
+            if (classname != null && studentid != null)
             {
                 Students student =
-                    await db.Students.FirstOrDefaultAsync(s => s.StudentId == id);
+                    await db.Students.FirstOrDefaultAsync(s => s.ClassName == classname && s.StudentId == studentid);
                 if (student != null)
                     return View(student);
             }
