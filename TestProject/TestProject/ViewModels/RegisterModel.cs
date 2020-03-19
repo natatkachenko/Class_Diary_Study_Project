@@ -11,6 +11,7 @@ namespace TestProject.ViewModels
         [Required(ErrorMessage = "Не указан Email")]
         public string Email { get; set; }
 
+        [DataType(DataType.Password)]
         [Required(ErrorMessage = "Не указан пароль")]
         public string Password { get; set; }
 

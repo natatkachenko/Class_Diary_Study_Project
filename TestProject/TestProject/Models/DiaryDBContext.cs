@@ -9,8 +9,7 @@ namespace TestProject.Models
         public DiaryDBContext(DbContextOptions<DiaryDBContext> options)
             : base(options)
         {
-            Database.EnsureDeleted(); // удаляем бд со старой схемой
-            Database.EnsureCreated(); // создаем бд с новой схемой
+            Database.EnsureCreated();
         }
 
         public virtual DbSet<ClassSubject> ClassSubject { get; set; }
