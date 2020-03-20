@@ -67,7 +67,7 @@ namespace TestProject.Controllers
             {
                 db.Students.Remove(student);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { classname = student.ClassName });
             }
             return NotFound();
         }
