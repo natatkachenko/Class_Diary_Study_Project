@@ -31,9 +31,15 @@ namespace TestProject.Controllers
         }
 
         // вызов формы для добавления ученика класса
-        public IActionResult Add()
+        [HttpGet]
+        public IActionResult Add(string classname)
         {
-            return View();
+            if (classname != null)
+            {
+                var students = db.Students.FirstOrDefault(s => s.ClassName == classname);
+                return View(students);
+            }
+            return NotFound();
         }
 
         // добавление нового ученика класса в бд
@@ -42,7 +48,7 @@ namespace TestProject.Controllers
         {
             db.Students.Add(student);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { classname = student.ClassName });
         }
 
         // показ удаляемого ученика класса
