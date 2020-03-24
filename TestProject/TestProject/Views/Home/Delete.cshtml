@@ -1,4 +1,4 @@
-﻿@model TestProject.Models.Classes
+﻿@model TestProject.Models.Class
 @{ 
     ViewBag.Title = "Удаление класса";
 }
@@ -7,11 +7,11 @@
     <dl>
         <dt>Наименование</dt>
         <dd>
-            @Html.DisplayFor(model=>model.ClassName)
+            @Html.DisplayFor(model=>model.Name)
         </dd>
     </dl>
     <div>
-        <form asp-controller="Home" asp-action="Delete" asp-route-classname="@Model.ClassName">
+        <form asp-controller="Home" asp-action="Delete" asp-route-name="@Model.Name">
             <div class="form-group">
                 <input type="submit" value="Удалить" />
             </div>

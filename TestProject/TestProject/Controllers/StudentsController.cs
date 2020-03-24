@@ -20,14 +20,10 @@ namespace TestProject.Controllers
         }
 
         // вывод списка учеников выбранного класса
-        public async Task<IActionResult> Index(string classname)
+        public IActionResult Index()
         {
-            if (classname != null)
-            {
-                var students = await db.Students.FromSqlInterpolated($"Select * From Students Where ClassName={classname}").ToListAsync();
-                return View(students);
-            }
-            return NotFound();
+            var students = db.Students.Include(s => s.ClassName);
+            return View(students.ToList());
         }
 
         // вызов формы для добавления ученика класса
@@ -58,7 +54,7 @@ namespace TestProject.Controllers
             if (classname != null && studentid != null)
             {
                 Students student =
-                    await db.Students.FirstOrDefaultAsync(s => s.ClassName == classname && s.StudentId == studentid);
+                    await db.Students.FirstOrDefaultAsync(s => s.ClassName == classname && s.Id == studentid);
                 if (student != null)
                     return View(student);
             }

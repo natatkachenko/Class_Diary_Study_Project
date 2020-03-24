@@ -13,7 +13,7 @@ namespace TestProject.Models
         }
 
         public virtual DbSet<ClassSubject> ClassSubject { get; set; }
-        public virtual DbSet<Classes> Classes { get; set; }
+        public virtual DbSet<Class> Class { get; set; }
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<SubjectGrade> SubjectGrade { get; set; }
         public virtual DbSet<Subjects> Subjects { get; set; }
@@ -23,30 +23,28 @@ namespace TestProject.Models
         {
             modelBuilder.Entity<ClassSubject>(entity =>
             {
-                entity.HasKey(e => new { e.SubjectName, e.ClassName })
-                    .HasName("PK__ClassSub__F3D18835013DEB34");
+                entity.HasKey(e => new { e.Name, e.ClassName })
+                    .HasName("PK__ClassSubject");
 
-                entity.Property(e => e.SubjectName).HasMaxLength(50);
+                entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.ClassName).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Classes>(entity =>
+            modelBuilder.Entity<Class>(entity =>
             {
-                entity.HasKey(e => e.ClassName)
-                    .HasName("PK__Classes");
+                entity.HasKey(e => e.Name)
+                    .HasName("PK__Class");
 
-                entity.Property(e => e.ClassName).HasMaxLength(50);
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Students>(entity =>
             {
-                entity.HasKey(e => new { e.ClassName, e.StudentId })
+                entity.HasKey(e => e.Id)
                     .HasName("PK__Students");
 
-                entity.Property(e => e.ClassName).HasMaxLength(50);
-
-                entity.Property(e => e.StudentId)
+                entity.Property(e => e.Id)
                     .HasColumnName("StudentID")
                     .ValueGeneratedOnAdd();
 
@@ -58,6 +56,12 @@ namespace TestProject.Models
                     .IsRequired()
                     .HasMaxLength(50);
             });
+
+            modelBuilder.Entity<Students>()
+                .HasOne(s => s.Class)
+                .WithMany(p => p.Students)
+                .HasForeignKey(s => s.ClassName)
+                .HasConstraintName("FK__StudentsClasses");
 
             modelBuilder.Entity<SubjectGrade>(entity =>
             {
@@ -74,10 +78,10 @@ namespace TestProject.Models
 
             modelBuilder.Entity<Subjects>(entity =>
             {
-                entity.HasKey(e => e.SubjectName)
+                entity.HasKey(e => e.Name)
                     .HasName("PK__Subjects__4C5A7D54DC73CA2F");
 
-                entity.Property(e => e.SubjectName).HasMaxLength(50);
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace TestProject.Models
 {
-    public partial class Classes
+    public partial class Class
     {
-        public string ClassName { get; set; }
+        public string Name { get; set; }
+        public List<Students> Students { get; set; } 
     }
 }
