@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TestProject.Models.Classes>
+﻿@model IEnumerable<TestProject.Models.Class>
 @{
     ViewBag.Title = "Электронный дневник";
 }
@@ -10,9 +10,9 @@
     @foreach (var stclass in Model)
     {
         <tr>
-            <td><a asp-action="Index" asp-controller="Students" asp-route-classname="@stclass.ClassName">@stclass.ClassName</a></td>
+            <td><a asp-action="Index" asp-controller="Students" asp-route-name="@stclass.Name">@stclass.Name</a></td>
             <td>
-            <a asp-action="Delete" asp-controller="Home" asp-route-classname="@stclass.ClassName">Удалить</a>
+            <a asp-action="Delete" asp-controller="Home" asp-route-name="@stclass.Name">Удалить</a>
             </td>
         </tr>
     }

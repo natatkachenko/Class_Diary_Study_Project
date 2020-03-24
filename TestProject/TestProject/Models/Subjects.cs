@@ -5,6 +5,6 @@ namespace TestProject.Models
 {
     public partial class Subjects
     {
-        public string SubjectName { get; set; }
+        public string Name { get; set; }
     }
 }
