@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -20,22 +21,24 @@ namespace TestProject.Controllers
         }
 
         // вывод списка учеников выбранного класса
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(string name)
         {
-            var students = db.Students.Include(s => s.ClassName);
-            return View(students.ToList());
+            if (name != null)
+            {
+                Students students = db.Students.Include(s => s.Class).FirstOrDefault(c => c.ClassName == name);
+                if (students != null)
+                    return View(students);
+            }
+            return NotFound();
         }
 
         // вызов формы для добавления ученика класса
         [HttpGet]
-        public IActionResult Add(string classname)
+        public IActionResult Add()
         {
-            if (classname != null)
-            {
-                var students = db.Students.FirstOrDefault(s => s.ClassName == classname);
-                return View(students);
-            }
-            return NotFound();
+            
+            return View();
         }
 
         // добавление нового ученика класса в бд
@@ -44,7 +47,7 @@ namespace TestProject.Controllers
         {
             db.Students.Add(student);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index", new { classname = student.ClassName });
+            return RedirectToAction("Index", new { name = student.Class });
         }
 
         // показ удаляемого ученика класса

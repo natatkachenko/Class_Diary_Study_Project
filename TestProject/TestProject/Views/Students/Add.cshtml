@@ -3,7 +3,8 @@
     ViewBag.Title = "Добавление нового ученика";
 }
 
-<form asp-action="Add" asp-controller="Students" asp-route-classname="@Model.ClassName">
+<form asp-action="Add" asp-controller="Students">
+    <p>@ViewBag.ClassName</p>
     <div class="form-group">
             <label asp-for="LastName" class="custom-control-label">Фамилия</label>
             <input type="text" asp-for="LastName" class="form-control" />
