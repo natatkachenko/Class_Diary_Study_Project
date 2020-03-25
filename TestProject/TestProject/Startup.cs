@@ -69,7 +69,7 @@ namespace TestProject
 
                 endpoints.MapControllerRoute(
                     name: "students",
-                    pattern: "{controller=Students}/{action=Index}/{classname?}");
+                    pattern: "{controller=Students}/{action=Index}/{name?}");
             });
         }
     }
