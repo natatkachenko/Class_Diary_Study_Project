@@ -13,7 +13,7 @@ namespace TestProject.Models
         }
 
         public virtual DbSet<ClassSubject> ClassSubject { get; set; }
-        public virtual DbSet<Class> Class { get; set; }
+        public virtual DbSet<Classes> Classes { get; set; }
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<SubjectGrade> SubjectGrade { get; set; }
         public virtual DbSet<Subjects> Subjects { get; set; }
@@ -31,7 +31,7 @@ namespace TestProject.Models
                 entity.Property(e => e.ClassName).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Class>(entity =>
+            modelBuilder.Entity<Classes>(entity =>
             {
                 entity.HasKey(e => e.Name)
                     .HasName("PK__Class");
@@ -41,8 +41,8 @@ namespace TestProject.Models
 
             modelBuilder.Entity<Students>(entity =>
             {
-                entity.HasKey(e => e.Id)
-                    .HasName("PK__Students");
+                entity.HasKey(e => new { e.ClassName, e.Id })
+                    .HasName("PK_Students");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("StudentID")
@@ -56,12 +56,6 @@ namespace TestProject.Models
                     .IsRequired()
                     .HasMaxLength(50);
             });
-
-            modelBuilder.Entity<Students>()
-                .HasOne(s => s.Class)
-                .WithMany(p => p.Students)
-                .HasForeignKey(s => s.ClassName)
-                .HasConstraintName("FK__StudentsClasses");
 
             modelBuilder.Entity<SubjectGrade>(entity =>
             {

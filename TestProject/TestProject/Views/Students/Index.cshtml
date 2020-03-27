@@ -16,7 +16,7 @@
             <td><a asp-action="Grade" asp-controller="SubjectGrade" asp-route-id="@student.Id">@student.LastName</a></td>
             <td>@student.FirstName</td>
             <td>
-                <a asp-action="Delete" asp-controller="Students" asp-route-classname="@student.ClassName" asp-route-studentid="@student.Id">Удалить</a>
+                <a asp-action="Delete" asp-controller="Students" asp-route-classname="@student.ClassName" asp-route-id="@student.Id">Удалить</a>
             </td>
         </tr>
     }
