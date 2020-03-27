@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TestProject.Controllers
 {
@@ -26,18 +26,19 @@ namespace TestProject.Controllers
         {
             if (name != null)
             {
-                Students students = db.Students.Include(s => s.Class).FirstOrDefault(c => c.ClassName == name);
-                if (students != null)
+                var students = 
+                    db.Students.FromSqlInterpolated($"Select * From Students Where ClassName={name}").ToList();
+                if(students!=null)
                     return View(students);
             }
             return NotFound();
         }
 
         // вызов формы для добавления ученика класса
-        [HttpGet]
         public IActionResult Add()
         {
-            
+            SelectList classes = new SelectList(db.Classes, "Name", "Name");
+            ViewBag.Classes = classes;
             return View();
         }
 
@@ -47,17 +48,17 @@ namespace TestProject.Controllers
         {
             db.Students.Add(student);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index", new { name = student.Class });
+            return RedirectToAction("Index", new { name = student.ClassName });
         }
 
         // показ удаляемого ученика класса
         [HttpGet]
-        public async Task<IActionResult> Delete(string classname, int? studentid)
+        public async Task<IActionResult> Delete(string classname, int? id)
         {
-            if (classname != null && studentid != null)
+            if (classname != null && id != null)
             {
                 Students student =
-                    await db.Students.FirstOrDefaultAsync(s => s.ClassName == classname && s.Id == studentid);
+                    await db.Students.FirstOrDefaultAsync(s => s.ClassName == classname && s.Id == id);
                 if (student != null)
                     return View(student);
             }
@@ -72,7 +73,7 @@ namespace TestProject.Controllers
             {
                 db.Students.Remove(student);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index", new { classname = student.ClassName });
+                return RedirectToAction("Index", new { name = student.ClassName });
             }
             return NotFound();
         }

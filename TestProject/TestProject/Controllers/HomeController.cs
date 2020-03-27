@@ -25,7 +25,7 @@ namespace TestProject.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await db.Class.ToListAsync());
+                return View(await db.Classes.ToListAsync());
             }
             return Content("Пользователь не аутентифицирован");
         }
@@ -38,9 +38,9 @@ namespace TestProject.Controllers
 
         // добавление нового класса в бд
         [HttpPost]
-        public async Task<IActionResult> Add(Class classes)
+        public async Task<IActionResult> Add(Classes classes)
         {
-            db.Class.Add(classes);
+            db.Classes.Add(classes);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -51,8 +51,8 @@ namespace TestProject.Controllers
         {
             if (name != null)
             {
-                Class classes =
-                    await db.Class.FirstOrDefaultAsync(c => c.Name == name);
+                Classes classes =
+                    await db.Classes.FirstOrDefaultAsync(c => c.Name == name);
                 if (classes != null)
                     return View(classes);
             }
@@ -61,11 +61,11 @@ namespace TestProject.Controllers
 
         // удаление класса из бд
         [HttpPost]
-        public async Task<IActionResult> Delete(Class classes)
+        public async Task<IActionResult> Delete(Classes classes)
         {
             if (classes != null)
             {
-                db.Class.Remove(classes);
+                db.Classes.Remove(classes);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
