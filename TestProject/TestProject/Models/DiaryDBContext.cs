@@ -59,6 +59,9 @@ namespace TestProject.Models
 
             modelBuilder.Entity<SubjectGrade>(entity =>
             {
+                entity.HasKey(e => new { e.Id, e.StudentId, e.SubjectName })
+                    .HasName("PK_SubjectGrade");
+
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Date).HasColumnType("date");
