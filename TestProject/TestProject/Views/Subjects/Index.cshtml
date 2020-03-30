@@ -1,0 +1,20 @@
+﻿@model IEnumerable<TestProject.Models.Subjects>
+@{
+    ViewBag.Title = "Предметы";
+}
+<h3>Предметы</h3>
+<table class="table">
+    <tr>
+        <td>Название предмета</td>
+    </tr>
+    @foreach (var sub in Model)
+    {
+        <tr>
+            <td><a asp-action="Index" asp-controller="" asp-route-name="@sub.Name">@sub.Name</a></td>
+            <td>
+                <a asp-action="Delete" asp-controller="Subjects" asp-route-name="@sub.Name">Удалить</a>
+            </td>
+        </tr>
+    }
+</table>
+<a asp-action="Add">Добавить</a>

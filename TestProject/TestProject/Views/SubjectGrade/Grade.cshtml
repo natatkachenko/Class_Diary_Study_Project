@@ -16,7 +16,7 @@
             <td>@sbgrade.Id</td>
             <td>@sbgrade.Date</td>
             <td>@sbgrade.SubjectName</td>
-            <td><a asp-action="Edit" asp-controller="SubjectGrade" asp-route-subjectname="@sbgrade.SubjectName">@sbgrade.Grade</a></td>
+            <td><a asp-action="Edit" asp-controller="SubjectGrade" asp-route-id="@sbgrade.Id" asp-route-studentid="@sbgrade.StudentId" asp-route-subjectname="@sbgrade.SubjectName">@sbgrade.Grade</a></td>
         </tr>
     }
 </table>

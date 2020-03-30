@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -21,22 +20,27 @@ namespace TestProject.Controllers
         }
 
         // вывод списка предметов с оценками выбранного ученика
-        public async Task<IActionResult> Grade(int? studentId)
+        [HttpGet]
+        public IActionResult Grade(int? id)
         {
-            if (studentId != null)
+            if (id != null)
             {
-                var stgrade = await db.SubjectGrade.FromSqlInterpolated($"Select * From SubjectGrade Where StudentId={studentId}").ToListAsync();
-                return View(stgrade);
+                var stgrade = db.SubjectGrade.FromSqlInterpolated($"Select * From SubjectGrade Where StudentId={id}").ToList();
+                if (stgrade != null)
+                    return View(stgrade);
             }
             return NotFound();
         }
 
         // вызов формы для ввода оценки
-        public async Task<IActionResult> Edit(string sbname)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id, int? studentid, string subjectname)
         {
-            if (sbname != null)
+            if (id!=null && studentid!=null && subjectname != null)
             {
-                SubjectGrade sbgrade = await db.SubjectGrade.FirstOrDefaultAsync(sb => sb.SubjectName == sbname);
+                SubjectGrade sbgrade = 
+                    await db.SubjectGrade
+                    .FirstOrDefaultAsync(sb => sb.Id==id && sb.StudentId==studentid && sb.SubjectName == subjectname);
                 if (sbgrade != null)
                     return View(sbgrade);
             }
@@ -51,9 +55,13 @@ namespace TestProject.Controllers
             {
                 case DayOfWeek.Saturday:
                 case DayOfWeek.Sunday:
-                    Message();
-                    Thread.Sleep(5000);
-                    break;
+                    return new ContentResult()
+                    {
+                        Content = "Запрещено вводить оценку в выходной день!"
+                    };
+            }
+            switch (sbgrade.Date.DayOfWeek)
+            {
                 case DayOfWeek.Monday:
                 case DayOfWeek.Tuesday:
                 case DayOfWeek.Wednesday:
@@ -61,14 +69,9 @@ namespace TestProject.Controllers
                 case DayOfWeek.Friday:
                     db.SubjectGrade.Update(sbgrade);
                     await db.SaveChangesAsync();
-                    return RedirectToAction("Grade");
+                    break;
             }
-            return RedirectToAction("Grade");
-        }
-
-        public string Message()
-        {
-            return "Запрещено вводить оценку в выходной день!";
+            return RedirectToAction("Grade", new { id = sbgrade.StudentId });
         }
     }
 }

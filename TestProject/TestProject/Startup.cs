@@ -70,6 +70,10 @@ namespace TestProject
                 endpoints.MapControllerRoute(
                     name: "students",
                     pattern: "{controller=Students}/{action=Index}/{name?}");
+
+                endpoints.MapControllerRoute(
+                    name: "subjectgrade",
+                    pattern: "{controller=SubjectGrade}/{action=Grade}/{id?}");
             });
         }
     }
