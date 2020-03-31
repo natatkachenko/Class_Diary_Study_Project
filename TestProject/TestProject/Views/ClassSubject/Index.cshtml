@@ -1,0 +1,16 @@
+﻿@model IEnumerable<TestProject.Models.ClassSubject>
+@{
+    ViewBag.Title = "Классы, изучающие предмет";
+}
+<h3>Список классов, у которых ведётся предмет</h3>
+<table class="table">
+    <tr>
+        <td>Название класса</td>
+    </tr>
+    @foreach (var stclass in Model)
+    {
+        <tr>
+            <td><a asp-action="Index" asp-controller="Students" asp-route-name="@stclass.ClassName">@stclass.ClassName</a></td>
+        </tr>
+    }
+</table>
