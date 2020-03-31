@@ -23,10 +23,10 @@ namespace TestProject.Models
         {
             modelBuilder.Entity<ClassSubject>(entity =>
             {
-                entity.HasKey(e => new { e.Name, e.ClassName })
+                entity.HasKey(e => new { e.SubjectName, e.ClassName })
                     .HasName("PK__ClassSubject");
 
-                entity.Property(e => e.Name).HasMaxLength(50);
+                entity.Property(e => e.SubjectName).HasMaxLength(50);
 
                 entity.Property(e => e.ClassName).HasMaxLength(50);
             });
