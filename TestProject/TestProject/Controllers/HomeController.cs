@@ -15,9 +15,12 @@ namespace TestProject.Controllers
     public class HomeController : Controller
     {
         DiaryDBContext db;
-        public HomeController(DiaryDBContext context)
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(DiaryDBContext context, ILogger<HomeController> logger)
         {
             db = context;
+            _logger = logger;
         }
 
         // вывод списка классов
@@ -42,6 +45,7 @@ namespace TestProject.Controllers
         {
             db.Classes.Add(classes);
             await db.SaveChangesAsync();
+            _logger.LogInformation($"Add class {classes.Name} to the DiaryDB");
             return RedirectToAction("Index");
         }
 
@@ -65,10 +69,13 @@ namespace TestProject.Controllers
         {
             if (classes != null)
             {
+                _logger.LogTrace($"Class {classes.Name} was defined for remove from DiaryDB");
                 db.Classes.Remove(classes);
                 await db.SaveChangesAsync();
+                _logger.LogInformation($"Class {classes.Name} was deleted from DiaryDB");
                 return RedirectToAction("Index");
             }
+            _logger.LogError("Object Classes classes wasn't defined for remove from DiaryDB");
             return NotFound();
         }
     }
