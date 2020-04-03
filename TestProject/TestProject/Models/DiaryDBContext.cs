@@ -9,7 +9,6 @@ namespace TestProject.Models
         public DiaryDBContext(DbContextOptions<DiaryDBContext> options)
             : base(options)
         {
-            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -19,7 +18,7 @@ namespace TestProject.Models
         public virtual DbSet<SubjectGrade> SubjectGrade { get; set; }
         public virtual DbSet<Subjects> Subjects { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<Logs> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -89,7 +88,7 @@ namespace TestProject.Models
                     .HasName("PK_Users");
             });
 
-            modelBuilder.Entity<Log>(entity =>
+            modelBuilder.Entity<Logs>(entity =>
             {
                 entity.HasKey(e => e.Id)
                     .HasName("PK_Log");

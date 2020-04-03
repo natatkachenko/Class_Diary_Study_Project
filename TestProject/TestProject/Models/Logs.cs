@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TestProject.Models
 {
-    public class Log
+    public class Logs
     {
         public int Id { get; set; }
         public DateTime Logged { get; set; }

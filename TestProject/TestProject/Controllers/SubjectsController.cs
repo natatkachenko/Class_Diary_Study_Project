@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
 
@@ -12,9 +13,12 @@ namespace TestProject.Controllers
     public class SubjectsController : Controller
     {
         DiaryDBContext db;
-        public SubjectsController(DiaryDBContext context)
+        private readonly ILogger<SubjectsController> _logger;
+
+        public SubjectsController(DiaryDBContext context, ILogger<SubjectsController> logger)
         {
             db = context;
+            _logger = logger;
         }
 
         //вывод списка предметов
@@ -35,6 +39,7 @@ namespace TestProject.Controllers
         {
             db.Subjects.Add(subjects);
             await db.SaveChangesAsync();
+            _logger.LogInformation($"Add subject {subjects.Name} to the DiaryDB");
             return RedirectToAction("Index");
         }
 
@@ -58,10 +63,13 @@ namespace TestProject.Controllers
         {
             if (subjects != null)
             {
+                _logger.LogTrace($"Subject {subjects.Name} was defined for remove from DiaryDB");
                 db.Subjects.Remove(subjects);
                 await db.SaveChangesAsync();
+                _logger.LogInformation($"Subject {subjects.Name} was deleted from DiaryDB");
                 return RedirectToAction("Index");
             }
+            _logger.LogError("Object Subjects subjects wasn't defined for remove from DiaryDB");
             return NotFound();
         }
     }

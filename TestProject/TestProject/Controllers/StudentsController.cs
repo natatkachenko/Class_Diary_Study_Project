@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,9 +14,12 @@ namespace TestProject.Controllers
     public class StudentsController : Controller
     {
         DiaryDBContext db;
-        public StudentsController(DiaryDBContext context)
+        private readonly ILogger<StudentsController> _logger;
+
+        public StudentsController(DiaryDBContext context, ILogger<StudentsController> logger)
         {
             db = context;
+            _logger = logger;
         }
 
         // вывод списка учеников выбранного класса
@@ -46,6 +50,7 @@ namespace TestProject.Controllers
         {
             db.Students.Add(student);
             await db.SaveChangesAsync();
+            _logger.LogInformation($"Add student (ID = {student.Id}) to the DiaryDB");
             return RedirectToAction("Index", new { name = student.ClassName });
         }
 
@@ -69,10 +74,13 @@ namespace TestProject.Controllers
         {
             if (student != null)
             {
+                _logger.LogTrace($"Student (ID = {student.Id}) was defined for remove from DiaryDB");
                 db.Students.Remove(student);
                 await db.SaveChangesAsync();
+                _logger.LogInformation($"Student (ID = {student.Id}) was deleted from DiaryDB");
                 return RedirectToAction("Index", new { name = student.ClassName });
             }
+            _logger.LogError("Object Students student wasn't defined for remove from DiaryDB");
             return NotFound();
         }
     }
