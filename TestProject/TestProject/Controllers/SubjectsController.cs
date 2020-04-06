@@ -7,18 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
+using NLog;
 
 namespace TestProject.Controllers
 {
     public class SubjectsController : Controller
     {
         DiaryDBContext db;
-        private readonly ILogger<SubjectsController> _logger;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public SubjectsController(DiaryDBContext context, ILogger<SubjectsController> logger)
+        public SubjectsController(DiaryDBContext context)
         {
             db = context;
-            _logger = logger;
         }
 
         //вывод списка предметов
@@ -39,7 +39,7 @@ namespace TestProject.Controllers
         {
             db.Subjects.Add(subjects);
             await db.SaveChangesAsync();
-            _logger.LogInformation($"Add subject {subjects.Name} to the DiaryDB");
+            logger.Info($"Add subject {subjects.Name} to the DiaryDB");
             return RedirectToAction("Index");
         }
 
@@ -63,13 +63,13 @@ namespace TestProject.Controllers
         {
             if (subjects != null)
             {
-                _logger.LogTrace($"Subject {subjects.Name} was defined for remove from DiaryDB");
+                logger.Trace($"Subject {subjects.Name} was defined for remove from DiaryDB");
                 db.Subjects.Remove(subjects);
                 await db.SaveChangesAsync();
-                _logger.LogInformation($"Subject {subjects.Name} was deleted from DiaryDB");
+                logger.Info($"Subject {subjects.Name} was deleted from DiaryDB");
                 return RedirectToAction("Index");
             }
-            _logger.LogError("Object Subjects subjects wasn't defined for remove from DiaryDB");
+            logger.Error("Object Subjects subjects wasn't defined for remove from DiaryDB");
             return NotFound();
         }
     }

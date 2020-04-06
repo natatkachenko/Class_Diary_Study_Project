@@ -44,7 +44,6 @@ namespace TestProject
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            GlobalDiagnosticsContext.Set("configDir", "F:\\Program\\eDiary\\Logs");
             GlobalDiagnosticsContext.Set("connectionString", Configuration.GetConnectionString("DefaultConnection"));
 
             if (env.IsDevelopment())

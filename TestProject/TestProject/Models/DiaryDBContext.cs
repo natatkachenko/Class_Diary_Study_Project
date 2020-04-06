@@ -18,7 +18,6 @@ namespace TestProject.Models
         public virtual DbSet<SubjectGrade> SubjectGrade { get; set; }
         public virtual DbSet<Subjects> Subjects { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Logs> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -86,23 +85,6 @@ namespace TestProject.Models
             {
                 entity.HasKey(e => e.Id)
                     .HasName("PK_Users");
-            });
-
-            modelBuilder.Entity<Logs>(entity =>
-            {
-                entity.HasKey(e => e.Id)
-                    .HasName("PK_Log");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Logged).HasColumnType("datetime");
-
-                entity.Property(e => e.Level)
-                .IsRequired()
-                .HasMaxLength(50);
-
-                entity.Property(e => e.Message)
-                    .IsRequired();
             });
 
             OnModelCreatingPartial(modelBuilder);

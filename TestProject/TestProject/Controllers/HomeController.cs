@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
+using NLog;
 
 namespace TestProject.Controllers
 {
@@ -15,12 +16,11 @@ namespace TestProject.Controllers
     public class HomeController : Controller
     {
         DiaryDBContext db;
-        private readonly ILogger<HomeController> _logger;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public HomeController(DiaryDBContext context, ILogger<HomeController> logger)
+        public HomeController(DiaryDBContext context)
         {
             db = context;
-            _logger = logger;
         }
 
         // вывод списка классов
@@ -45,7 +45,7 @@ namespace TestProject.Controllers
         {
             db.Classes.Add(classes);
             await db.SaveChangesAsync();
-            _logger.LogInformation($"Add class {classes.Name} to the DiaryDB");
+            logger.Info($"Add class {classes.Name} to the DiaryDB");
             return RedirectToAction("Index");
         }
 
@@ -69,13 +69,13 @@ namespace TestProject.Controllers
         {
             if (classes != null)
             {
-                _logger.LogTrace($"Class {classes.Name} was defined for remove from DiaryDB");
+                logger.Trace($"Class {classes.Name} was defined for remove from DiaryDB");
                 db.Classes.Remove(classes);
                 await db.SaveChangesAsync();
-                _logger.LogInformation($"Class {classes.Name} was deleted from DiaryDB");
+                logger.Info($"Class {classes.Name} was deleted from DiaryDB");
                 return RedirectToAction("Index");
             }
-            _logger.LogError("Object Classes classes wasn't defined for remove from DiaryDB");
+            logger.Error("Object Classes classes wasn't defined for remove from DiaryDB");
             return NotFound();
         }
     }
