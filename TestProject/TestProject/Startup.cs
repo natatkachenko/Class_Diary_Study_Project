@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestProject.Models;
+using TestProject.Services;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 
@@ -37,6 +38,11 @@ namespace TestProject
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
+
+            // внедрение зависимости ClassService
+            services.AddTransient<ClassService>();
+            // добавление кэширования
+            services.AddMemoryCache();
 
             services.AddControllersWithViews();
         }
