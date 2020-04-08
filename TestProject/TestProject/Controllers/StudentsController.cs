@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
+using TestProject.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NLog;
 
@@ -16,21 +17,24 @@ namespace TestProject.Controllers
     {
         DiaryDBContext db;
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        ClassService classService;
 
-        public StudentsController(DiaryDBContext context)
+        public StudentsController(DiaryDBContext context, ClassService service)
         {
             db = context;
+            classService = service;
         }
 
         // вывод списка учеников выбранного класса
         [HttpGet]
-        public IActionResult Index(string name)
+        public async Task<IActionResult> Index(string name)
         {
-            if (name != null)
+            Classes stclass = await classService.GetClass(name);
+            if (stclass.Name != null)
             {
                 var students = 
-                    db.Students.FromSqlInterpolated($"Select * From Students Where ClassName={name}").ToList();
-                if(students!=null)
+                    db.Students.FromSqlInterpolated($"Select * From Students Where ClassName={stclass.Name}").ToList();
+                if (students != null)
                     return View(students);
             }
             return NotFound();
