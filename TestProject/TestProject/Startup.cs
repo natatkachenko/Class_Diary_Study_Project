@@ -39,10 +39,15 @@ namespace TestProject
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
 
-            // внедрение зависимости ClassService
-            services.AddTransient<ClassService>();
             // добавление кэширования
             services.AddMemoryCache();
+
+            // внедрение зависимости ClassService
+            services.AddTransient<ClassService>();
+            // внедрение зависимости StudentService
+            services.AddTransient<StudentService>();
+            // внедрение зависимости SubjectService
+            services.AddTransient<SubjectService>();
 
             services.AddControllersWithViews();
         }
