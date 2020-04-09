@@ -8,27 +8,29 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
+using TestProject.Services;
 
 namespace TestProject.Controllers
 {
     public class SubjectGradeController : Controller
     {
         DiaryDBContext db;
-        public SubjectGradeController(DiaryDBContext context)
+        StudentService studentService;
+
+        public SubjectGradeController(DiaryDBContext context, StudentService service)
         {
             db = context;
+            studentService = service;
         }
 
         // вывод списка предметов с оценками выбранного ученика
         [HttpGet]
-        public IActionResult Grade(int? id)
+        public async Task<IActionResult> Grade(int id)
         {
-            if (id != null)
-            {
-                var stgrade = db.SubjectGrade.FromSqlInterpolated($"Select * From SubjectGrade Where StudentId={id}").ToList();
-                if (stgrade != null)
-                    return View(stgrade);
-            }
+            Students student = await studentService.GetStudent(id);
+            var stgrade = db.SubjectGrade.FromSqlInterpolated($"Select * From SubjectGrade Where StudentId={student.Id}").ToList();
+            if (stgrade != null)
+                return View(stgrade);
             return NotFound();
         }
 

@@ -6,25 +6,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
+using TestProject.Services;
 
 namespace TestProject.Controllers
 {
     public class ClassSubjectController : Controller
     {
         DiaryDBContext db;
-        public ClassSubjectController(DiaryDBContext context)
+        SubjectService subjectService;
+
+        public ClassSubjectController(DiaryDBContext context, SubjectService service)
         {
             db = context;
+            subjectService = service;
         }
 
         // вывод списка классов, у которых ведётся выбранный предмет
         [HttpGet]
-        public IActionResult Index(string name)
+        public async Task<IActionResult> Index(string name)
         {
-            if (name != null)
+            Subjects subject = await subjectService.GetSubject(name);
+            if (subject.Name != null)
             {
                 var classes =
-                    db.ClassSubject.FromSqlInterpolated($"Select * From ClassSubject Where SubjectName={name}").ToList();
+                    db.ClassSubject.FromSqlInterpolated($"Select * From ClassSubject Where SubjectName={subject.Name}").ToList();
                 if (classes != null)
                     return View(classes);
             }
