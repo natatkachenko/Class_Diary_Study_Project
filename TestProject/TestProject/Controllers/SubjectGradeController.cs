@@ -9,12 +9,15 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
 using TestProject.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using NLog;
 
 namespace TestProject.Controllers
 {
     public class SubjectGradeController : Controller
     {
         DiaryDBContext db;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         StudentService studentService;
 
         public SubjectGradeController(DiaryDBContext context, StudentService service)
@@ -32,6 +35,44 @@ namespace TestProject.Controllers
             if (stgrade != null)
                 return View(stgrade);
             return NotFound();
+        }
+
+        // вызов формы для добавления новой оценки
+        public IActionResult Add()
+        {
+            SelectList students = new SelectList(db.Students, "Id", "Id");
+            ViewBag.Students = students;
+            SelectList subjects = new SelectList(db.Subjects, "Name", "Name");
+            ViewBag.Subjects = subjects;
+            return View();
+        }
+
+        // добавление новой оценки в бд
+        [HttpPost]
+        public async Task<IActionResult> Add(SubjectGrade sbgrade)
+        {
+            switch (sbgrade.Date.DayOfWeek)
+            {
+                case DayOfWeek.Saturday:
+                case DayOfWeek.Sunday:
+                    return new ContentResult()
+                    {
+                        Content = "Запрещено вводить оценку в выходной день!"
+                    };
+            }
+            switch (sbgrade.Date.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                case DayOfWeek.Tuesday:
+                case DayOfWeek.Wednesday:
+                case DayOfWeek.Thursday:
+                case DayOfWeek.Friday:
+                    db.SubjectGrade.Add(sbgrade);
+                    await db.SaveChangesAsync();
+                    break;
+            }
+            logger.Info($"Add grade (StudentID = {sbgrade.StudentId}, Subject = {sbgrade.SubjectName}) to the DiaryDB");
+            return RedirectToAction("Grade", new { id = sbgrade.StudentId });
         }
 
         // вызов формы для ввода оценки
@@ -74,6 +115,37 @@ namespace TestProject.Controllers
                     break;
             }
             return RedirectToAction("Grade", new { id = sbgrade.StudentId });
+        }
+
+        // показ удаляемой оценки ученика 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? stid, int? id, string sbname)
+        {
+            if (stid != null && id != null && sbname != null)
+            {
+                SubjectGrade subjectGrade =
+                    await db.SubjectGrade
+                    .FirstOrDefaultAsync(s => s.StudentId == stid && s.Id == id && s.SubjectName == sbname);
+                if (subjectGrade != null)
+                    return View(subjectGrade);
+            }
+            return NotFound();
+        }
+
+        // удаление оценки ученика из бд
+        [HttpPost]
+        public async Task<IActionResult> Delete(SubjectGrade subjectGrade)
+        {
+            if (subjectGrade != null)
+            {
+                logger.Trace($"Grade (StudentID = {subjectGrade.StudentId}, Subject = {subjectGrade.SubjectName}) was defined for remove from DiaryDB");
+                db.SubjectGrade.Remove(subjectGrade);
+                await db.SaveChangesAsync();
+                logger.Info($"Grade (StudentID = {subjectGrade.StudentId}, Subject = {subjectGrade.SubjectName}) was deleted from DiaryDB");
+                return RedirectToAction("Grade", new { id = subjectGrade.StudentId });
+            }
+            logger.Error("Object SubjectGrade subjectGrade wasn't defined for remove from DiaryDB");
+            return NotFound();
         }
     }
 }

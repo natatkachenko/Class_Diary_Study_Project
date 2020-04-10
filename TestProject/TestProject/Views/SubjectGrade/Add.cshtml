@@ -1,0 +1,23 @@
+﻿@model TestProject.Models.SubjectGrade
+@{
+    ViewBag.Title = "Добавление новой оценки";
+}
+
+<form asp-action="Add" asp-controller="SubjectGrade">
+    <div class="form-group">
+        <label asp-for="StudentId" class="custom-control-label">Класс</label>
+        <select asp-for="" asp-items="ViewBag.Classes"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName" class="custom-control-label">Фамилия</label>
+        <input type="text" asp-for="LastName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="FirstName" class="custom-control-label">Имя</label>
+        <input type="text" asp-for="FirstName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Добавить" />
+    </div>
+</form>
+
