@@ -48,11 +48,7 @@ namespace TestProject.Models
                     .HasColumnName("StudentID")
                     .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.LastName)
+                entity.Property(e => e.FullName)
                     .IsRequired()
                     .HasMaxLength(50);
             });
@@ -62,7 +58,9 @@ namespace TestProject.Models
                 entity.HasKey(e => new { e.Id, e.StudentId, e.SubjectName })
                     .HasName("PK_SubjectGrade");
 
-                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.Id)
+                .HasColumnName("ID")
+                .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Date).HasColumnType("date");
 

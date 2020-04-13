@@ -40,7 +40,7 @@ namespace TestProject.Controllers
         // вызов формы для добавления новой оценки
         public IActionResult Add()
         {
-            SelectList students = new SelectList(db.Students, "Id", "Id");
+            SelectList students = new SelectList(db.Students, "Id", "FullName");
             ViewBag.Students = students;
             SelectList subjects = new SelectList(db.Subjects, "Name", "Name");
             ViewBag.Subjects = subjects;
