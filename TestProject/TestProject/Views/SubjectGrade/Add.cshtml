@@ -5,16 +5,20 @@
 
 <form asp-action="Add" asp-controller="SubjectGrade">
     <div class="form-group">
-        <label asp-for="StudentId" class="custom-control-label">Класс</label>
-        <select asp-for="" asp-items="ViewBag.Classes"></select>
+        <label asp-for="StudentId" class="custom-control-label">Ученик:</label>
+        <select asp-for="StudentId" asp-items="ViewBag.Students"></select>
     </div>
     <div class="form-group">
-        <label asp-for="LastName" class="custom-control-label">Фамилия</label>
-        <input type="text" asp-for="LastName" class="form-control" />
+        <label asp-for="SubjectName" class="custom-control-label">Предмет:</label>
+        <select asp-for="SubjectName" asp-items="ViewBag.Subjects"></select>
     </div>
     <div class="form-group">
-        <label asp-for="FirstName" class="custom-control-label">Имя</label>
-        <input type="text" asp-for="FirstName" class="form-control" />
+        <label asp-for="Date" class="custom-control-label">Укажите дату:</label>
+        <input type="date" asp-for="Date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Grade" class="custom-control-label">Укажите оценку:</label>
+        <input type="number" min="1" max="12" value="1" asp-for="Grade" class="form-control" />
     </div>
     <div class="form-group">
         <input type="submit" value="Добавить" />
