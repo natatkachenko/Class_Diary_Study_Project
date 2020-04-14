@@ -11,6 +11,7 @@ using TestProject.Models;
 using TestProject.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NLog;
+using TestProject.Descriptor;
 
 namespace TestProject.Controllers
 {
@@ -31,9 +32,9 @@ namespace TestProject.Controllers
         public async Task<IActionResult> Grade(int id)
         {
             Students student = await studentService.GetStudent(id);
-            var stgrade = db.SubjectGrade.FromSqlInterpolated($"Select * From SubjectGrade Where StudentId={student.Id}").ToList();
-            if (stgrade != null)
-                return View(stgrade);
+            var studentGrade = db.SubjectGrade.FromSqlInterpolated($"Select * From SubjectGrade Where StudentId={student.Id}").ToList();
+            if (studentGrade != null)
+                return View(studentGrade);
             return NotFound();
         }
 
@@ -49,83 +50,84 @@ namespace TestProject.Controllers
 
         // добавление новой оценки в бд
         [HttpPost]
-        public async Task<IActionResult> Add(SubjectGrade sbgrade)
+        public async Task<IActionResult> Add(SubjectGrade subjectGrade)
         {
-            switch (sbgrade.Date.DayOfWeek)
+            switch (subjectGrade.Date.DayOfWeek)
             {
                 case DayOfWeek.Saturday:
                 case DayOfWeek.Sunday:
                     return new ContentResult()
                     {
-                        Content = "Запрещено вводить оценку в выходной день!"
+                        Content = Messages.CantAssessOnWeekends
                     };
             }
-            switch (sbgrade.Date.DayOfWeek)
+            switch (subjectGrade.Date.DayOfWeek)
             {
                 case DayOfWeek.Monday:
                 case DayOfWeek.Tuesday:
                 case DayOfWeek.Wednesday:
                 case DayOfWeek.Thursday:
                 case DayOfWeek.Friday:
-                    db.SubjectGrade.Add(sbgrade);
+                    db.SubjectGrade.Add(subjectGrade);
                     await db.SaveChangesAsync();
                     break;
             }
-            logger.Info($"Add grade (StudentID = {sbgrade.StudentId}, Subject = {sbgrade.SubjectName}) to the DiaryDB");
-            return RedirectToAction("Grade", new { id = sbgrade.StudentId });
+            logger.Info($"Add grade (StudentID = {subjectGrade.StudentId}, Subject = {subjectGrade.SubjectName}) to the DiaryDB");
+            return RedirectToAction("Grade", new { id = subjectGrade.StudentId });
         }
 
         // вызов формы для ввода оценки
         [HttpGet]
-        public async Task<IActionResult> Edit(int? id, int? studentid, string subjectname)
+        public async Task<IActionResult> Edit(int? id, int? studentId, string subjectName)
         {
-            if (id!=null && studentid!=null && subjectname != null)
+            if (id != null && studentId != null && subjectName != null)
             {
-                SubjectGrade sbgrade = 
+                SubjectGrade subjectGrade =
                     await db.SubjectGrade
-                    .FirstOrDefaultAsync(sb => sb.Id==id && sb.StudentId==studentid && sb.SubjectName == subjectname);
-                if (sbgrade != null)
-                    return View(sbgrade);
+                    .FirstOrDefaultAsync(sb => sb.Id == id && sb.StudentId == studentId && sb.SubjectName == subjectName);
+                if (subjectGrade != null)
+                    return View(subjectGrade);
             }
             return NotFound();
         }
 
         // сохранение оценки в бд
         [HttpPost]
-        public async Task<IActionResult> Edit(SubjectGrade sbgrade)
+        public async Task<IActionResult> Edit(SubjectGrade subjectGrade)
         {
-            switch (sbgrade.Date.DayOfWeek)
+            switch (subjectGrade.Date.DayOfWeek)
             {
                 case DayOfWeek.Saturday:
                 case DayOfWeek.Sunday:
                     return new ContentResult()
                     {
-                        Content = "Запрещено вводить оценку в выходной день!"
+                        Content = Messages.CantAssessOnWeekends
                     };
             }
-            switch (sbgrade.Date.DayOfWeek)
+            switch (subjectGrade.Date.DayOfWeek)
             {
                 case DayOfWeek.Monday:
                 case DayOfWeek.Tuesday:
                 case DayOfWeek.Wednesday:
                 case DayOfWeek.Thursday:
                 case DayOfWeek.Friday:
-                    db.SubjectGrade.Update(sbgrade);
+                    db.SubjectGrade.Update(subjectGrade);
                     await db.SaveChangesAsync();
                     break;
             }
-            return RedirectToAction("Grade", new { id = sbgrade.StudentId });
+            logger.Info($"Edit grade (ID = {subjectGrade.Id}, StudentID = {subjectGrade.StudentId}, Subject = {subjectGrade.SubjectName}) in the DiaryDB");
+            return RedirectToAction("Grade", new { id = subjectGrade.StudentId });
         }
 
         // показ удаляемой оценки ученика 
         [HttpGet]
-        public async Task<IActionResult> Delete(int? stid, int? id, string sbname)
+        public async Task<IActionResult> Delete(int? studentId, int? id, string subjectName)
         {
-            if (stid != null && id != null && sbname != null)
+            if (studentId != null && id != null && subjectName != null)
             {
                 SubjectGrade subjectGrade =
                     await db.SubjectGrade
-                    .FirstOrDefaultAsync(s => s.StudentId == stid && s.Id == id && s.SubjectName == sbname);
+                    .FirstOrDefaultAsync(s => s.StudentId == studentId && s.Id == id && s.SubjectName == subjectName);
                 if (subjectGrade != null)
                     return View(subjectGrade);
             }
@@ -138,10 +140,10 @@ namespace TestProject.Controllers
         {
             if (subjectGrade != null)
             {
-                logger.Trace($"Grade (StudentID = {subjectGrade.StudentId}, Subject = {subjectGrade.SubjectName}) was defined for remove from DiaryDB");
+                logger.Trace($"Grade (ID = {subjectGrade.Id}, StudentID = {subjectGrade.StudentId}, Subject = {subjectGrade.SubjectName}) was defined for remove from DiaryDB");
                 db.SubjectGrade.Remove(subjectGrade);
                 await db.SaveChangesAsync();
-                logger.Info($"Grade (StudentID = {subjectGrade.StudentId}, Subject = {subjectGrade.SubjectName}) was deleted from DiaryDB");
+                logger.Info($"Grade (ID = {subjectGrade.Id}, StudentID = {subjectGrade.StudentId}, Subject = {subjectGrade.SubjectName}) was deleted from DiaryDB");
                 return RedirectToAction("Grade", new { id = subjectGrade.StudentId });
             }
             logger.Error("Object SubjectGrade subjectGrade wasn't defined for remove from DiaryDB");

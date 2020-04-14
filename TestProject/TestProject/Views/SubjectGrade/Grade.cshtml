@@ -10,13 +10,15 @@
         <td>Название предмета</td>
         <td>Оценка</td>
     </tr>
-    @foreach (var sbgrade in Model)
+    @foreach (var subjectGrade in Model)
     {
         <tr>
-            <td>@sbgrade.Id</td>
-            <td>@sbgrade.Date</td>
-            <td>@sbgrade.SubjectName</td>
-            <td><a asp-action="Edit" asp-controller="SubjectGrade" asp-route-id="@sbgrade.Id" asp-route-studentid="@sbgrade.StudentId" asp-route-subjectname="@sbgrade.SubjectName">@sbgrade.Grade</a></td>
+            <td>@subjectGrade.Id</td>
+            <td>@subjectGrade.Date</td>
+            <td>@subjectGrade.SubjectName</td>
+            <td><a asp-action="Edit" asp-controller="SubjectGrade" asp-route-id="@subjectGrade.Id" asp-route-studentId="@subjectGrade.StudentId" asp-route-subjectName="@subjectGrade.SubjectName">@subjectGrade.Grade</a></td>
+            <td><a asp-action="Delete" asp-controller="SubjectGrade" asp-route-studentId="@subjectGrade.StudentId" asp-route-id="@subjectGrade.Id" asp-route-subjectName="@subjectGrade.SubjectName">Удалить</a></td>
         </tr>
     }
 </table>
+<a asp-action="Add">Добавить</a>
