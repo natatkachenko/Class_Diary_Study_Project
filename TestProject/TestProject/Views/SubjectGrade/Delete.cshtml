@@ -1,0 +1,32 @@
+﻿@model TestProject.Models.SubjectGrade
+@{
+    ViewBag.Title = "Удаление оценки ученика";
+}
+
+<div>
+    <dl>
+        <dt>ID ученика:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.StudentId)
+        </dd>
+        <dt>Название предмета:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.SubjectName)
+        </dd>
+        <dt>Дата оценки:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>Оценка:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Grade)
+        </dd>
+    </dl>
+    <div>
+        <form asp-controller="SubjectGrade" asp-action="Delete" asp-route-studentId="@Model.StudentId" asp-route-id="@Model.Id" asp-route-subjectName="@Model.SubjectName">
+            <div class="form-group">
+                <input type="submit" value="Удалить" />
+            </div>
+        </form>
+    </div>
+</div>

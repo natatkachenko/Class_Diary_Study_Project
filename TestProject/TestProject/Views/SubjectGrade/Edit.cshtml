@@ -3,7 +3,7 @@
     ViewBag.Title = "Внесение оценки по предмету";
 }
 
-<form asp-action="Edit" asp-controller="SubjectGrade" asp-route-id="@Model.Id" asp-route-studentid="@Model.StudentId" asp-route-subjectname="@Model.SubjectName">
+<form asp-action="Edit" asp-controller="SubjectGrade" asp-route-id="@Model.Id" asp-route-studentId="@Model.StudentId" asp-route-subjectName="@Model.SubjectName">
     <div class="form-group">
         <label asp-for="Date" class="custom-control-label">Укажите дату:</label>
         <input type="date" asp-for="Date" class="form-control" />
