@@ -33,6 +33,7 @@ namespace TestProject.Controllers
         {
             Students student = await studentService.GetStudent(id);
             var studentGrade = db.SubjectGrade.FromSqlInterpolated($"Select * From SubjectGrade Where StudentId={student.Id}").ToList();
+            var result = db.SubjectGrade.FromSqlInterpolated($"Select AVG(Grade) From SubjectGrade Where StudentId={student.Id}");
             if (studentGrade != null)
                 return View(studentGrade);
             return NotFound();
