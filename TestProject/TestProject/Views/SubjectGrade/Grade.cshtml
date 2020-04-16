@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Оценки ученика";
 }
+<style>
+    #left {text-align: left; font-size: 20px; font-weight: 700;}
+</style>
     <h3>Оценки ученика</h3>
 <table class="table">
     <tr>
@@ -21,4 +24,5 @@
         </tr>
     }
 </table>
+<h4 id="left">@ViewBag.AVG</h4>
 <a asp-action="Add">Добавить</a>
