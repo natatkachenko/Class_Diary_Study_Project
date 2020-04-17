@@ -33,8 +33,6 @@ namespace TestProject.Controllers
         {
             Students student = await studentService.GetStudent(id);
             var studentGrade = db.SubjectGrade.FromSqlInterpolated($"Select * From SubjectGrade Where StudentId={student.Id}").ToList();
-            var averageGrade = db.SubjectGrade.FromSqlInterpolated($"Select AVG(Grade) From SubjectGrade Where StudentId={student.Id}");
-            ViewBag.AVG = averageGrade;
             if (studentGrade != null)
                 return View(studentGrade);
             return NotFound();
