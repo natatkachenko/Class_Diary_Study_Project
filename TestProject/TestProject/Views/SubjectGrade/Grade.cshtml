@@ -3,7 +3,7 @@
     ViewBag.Title = "Оценки ученика";
 }
 <style>
-    #left {text-align: left; font-size: 20px; font-weight: 700;}
+    #right{text-align:right;}
 </style>
     <h3>Оценки ученика</h3>
 <table class="table">
@@ -11,7 +11,7 @@
         <td>Номер</td>
         <td>Дата</td>
         <td>Название предмета</td>
-        <td>Оценка</td>
+        <td id="right">Оценка</td>
     </tr>
     @foreach (var subjectGrade in Model)
     {
@@ -19,10 +19,13 @@
             <td>@subjectGrade.Id</td>
             <td>@subjectGrade.Date</td>
             <td>@subjectGrade.SubjectName</td>
-            <td><a asp-action="Edit" asp-controller="SubjectGrade" asp-route-id="@subjectGrade.Id" asp-route-studentId="@subjectGrade.StudentId" asp-route-subjectName="@subjectGrade.SubjectName">@subjectGrade.Grade</a></td>
+            <td id="right"><a asp-action="Edit" asp-controller="SubjectGrade" asp-route-id="@subjectGrade.Id" asp-route-studentId="@subjectGrade.StudentId" asp-route-subjectName="@subjectGrade.SubjectName">@subjectGrade.Grade</a></td>
             <td><a asp-action="Delete" asp-controller="SubjectGrade" asp-route-studentId="@subjectGrade.StudentId" asp-route-id="@subjectGrade.Id" asp-route-subjectName="@subjectGrade.SubjectName">Удалить</a></td>
         </tr>
     }
+    <tr>
+        <td colspan="3"><b>Итоги</b></td>
+        <td id="right"><b>Средняя оценка:  @Model.Average(g => g.Grade)</b></td>
+    </tr>
 </table>
-<h4 id="left">@ViewBag.AVG</h4>
 <a asp-action="Add">Добавить</a>
