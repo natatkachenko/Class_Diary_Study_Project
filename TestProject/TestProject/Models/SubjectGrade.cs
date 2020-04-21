@@ -8,7 +8,7 @@ namespace TestProject.Models
         public int StudentId { get; set; }
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public int? Grade { get; set; }
+        public int Grade { get; set; }
         public string SubjectName { get; set; }
     }
 }
