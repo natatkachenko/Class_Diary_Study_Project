@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
 using TestProject.Services;
+using TestProject.ViewModels;
 
 namespace TestProject.Controllers
 {
@@ -32,6 +33,29 @@ namespace TestProject.Controllers
                     db.ClassSubject.FromSqlInterpolated($"Select * From ClassSubject Where SubjectName={subject.Name}").ToList();
                 if (classes != null)
                     return View(classes);
+            }
+            return NotFound();
+        }
+
+        // вывод оценок студентов опредеоенного класса с фильтрацией по предметам
+        public IActionResult StudentGradeOnSubject(string className)
+        {
+            if (className != null)
+            {
+                List<Subjects> subjects = 
+                    db.Subjects.Select(s => new Subjects { Name = s.Name }).ToList();
+                List<Students> students =
+                    db.Students.Select(s => new Students { ClassName = className, Id = s.Id, FullName = s.FullName }).ToList();
+                List<SubjectGradeModel> subjectGrades = 
+                    db.SubjectGrade.Select(s => new SubjectGradeModel { Date = s.Date, Grade = s.Grade }).ToList();
+                StudentGradeOnSubject studentGradeOnSubject =
+                    new StudentGradeOnSubject
+                    {
+                        Subjects = subjects,
+                        Students = students,
+                        SubjectGrades = subjectGrades
+                    };
+                return View(studentGradeOnSubject);
             }
             return NotFound();
         }
