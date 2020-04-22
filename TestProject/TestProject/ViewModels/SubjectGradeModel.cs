@@ -9,5 +9,6 @@ namespace TestProject.ViewModels
     {
         public DateTime Date { get; set; }
         public int Grade { get; set; }
+        public string SubjectName { get; set; }
     }
 }

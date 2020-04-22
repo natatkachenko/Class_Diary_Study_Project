@@ -7,10 +7,10 @@
     <tr>
         <td>Название класса</td>
     </tr>
-    @foreach (var stclass in Model)
+    @foreach (var studentClass in Model)
     {
         <tr>
-            <td><a asp-action="Index" asp-controller="Students" asp-route-name="@stclass.ClassName">@stclass.ClassName</a></td>
+            <td><a asp-action="StudentGradeOnSubject" asp-controller="ClassSubject" asp-route-className="@studentClass.ClassName" asp-route-subjectName="@studentClass.SubjectName">@studentClass.ClassName</a></td>
         </tr>
     }
 </table>

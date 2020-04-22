@@ -38,18 +38,18 @@ namespace TestProject.Controllers
         }
 
         // вывод оценок студентов опредеоенного класса с фильтрацией по предметам
-        public IActionResult StudentGradeOnSubject(string className)
+        public IActionResult StudentGradeOnSubject(string className, string subjectName)
         {
-            if (className != null)
+            if (className != null && subjectName != null)
             {
                 List<Subjects> subjects = 
                     db.Subjects.Select(s => new Subjects { Name = s.Name }).ToList();
                 List<Students> students =
                     db.Students.Select(s => new Students { ClassName = className, Id = s.Id, FullName = s.FullName }).ToList();
-                List<SubjectGradeModel> subjectGrades = 
-                    db.SubjectGrade.Select(s => new SubjectGradeModel { Date = s.Date, Grade = s.Grade }).ToList();
-                StudentGradeOnSubject studentGradeOnSubject =
-                    new StudentGradeOnSubject
+                List<SubjectGradeModel> subjectGrades =
+                    db.SubjectGrade.Select(s => new SubjectGradeModel { Date = s.Date, Grade = s.Grade, SubjectName = subjectName }).ToList();
+                StudentGradeOnSubjectModel studentGradeOnSubject =
+                    new StudentGradeOnSubjectModel
                     {
                         Subjects = subjects,
                         Students = students,
