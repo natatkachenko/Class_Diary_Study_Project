@@ -1,0 +1,39 @@
+﻿@using TestProject.Models
+@using TestProject.ViewModels
+@model StudentGradeOnSubjectModel
+@{
+    ViewBag.Title = "Оценки учеников класса";
+}
+
+<form class="form-inline">
+    <label>Выберите предмет:</label>
+    <select name="subjectName" class="form-control">
+        @foreach(Subjects subjects in Model.Subjects)
+        {
+            <option value="@subjects.Name">@subjects.Name</option>
+        }
+    </select>
+    <input type="submit" />
+</form>
+<br />
+<table class="table">
+    <tr>
+        <td>Номер ученика</td>
+        <td>ФИО</td>
+        @foreach (SubjectGradeModel date in Model.SubjectGrades)
+        {
+            <td>@date.Date.ToShortDateString()</td>
+        }
+    </tr>
+    @foreach (Students students in Model.Students)
+    {
+        <tr>
+            <td>@students.Id</td>
+            <td>@students.FullName</td>
+            @foreach (SubjectGradeModel subjectGrade in Model.SubjectGrades)
+            {
+                <td>@subjectGrade.Grade</td>
+            }
+        </tr>
+    }
+</table>

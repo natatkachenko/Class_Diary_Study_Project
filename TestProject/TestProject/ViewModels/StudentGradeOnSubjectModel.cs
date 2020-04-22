@@ -6,7 +6,7 @@ using TestProject.Models;
 
 namespace TestProject.ViewModels
 {
-    public class StudentGradeOnSubject
+    public class StudentGradeOnSubjectModel
     {
         public IEnumerable<Students> Students { get; set; }
         public IEnumerable<SubjectGradeModel> SubjectGrades { get; set; }

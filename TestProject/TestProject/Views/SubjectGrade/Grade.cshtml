@@ -25,7 +25,14 @@
     }
     <tr>
         <td colspan="3"><b>Итоги</b></td>
-        <td id="right"><b>Средняя оценка:  @Model.Average(g => g.Grade)</b></td>
+        @if (Model.Any())
+        {
+            <td id="right"><b>Средняя оценка:  @Model.Average(g => g.Grade)</b></td>
+        }
+        else
+        {
+            <td id="right"><b>Средняя оценка:  0</b></td>
+        }
     </tr>
 </table>
 <a asp-action="Add">Добавить</a>
