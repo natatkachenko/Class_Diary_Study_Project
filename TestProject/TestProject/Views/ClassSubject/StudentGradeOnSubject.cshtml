@@ -5,7 +5,7 @@
     ViewBag.Title = "Оценки учеников класса";
 }
 
-<form class="form-inline">
+<form asp-controller="ClassSubject" asp-action="StudentGradeOnSubject" class="form-inline">
     <label>Выберите предмет:</label>
     <select name="subjectName" class="form-control">
         @foreach(Subjects subjects in Model.Subjects)

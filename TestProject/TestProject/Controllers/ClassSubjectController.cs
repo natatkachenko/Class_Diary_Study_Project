@@ -45,7 +45,7 @@ namespace TestProject.Controllers
                 List<Subjects> subjects = 
                     db.Subjects.Select(s => new Subjects { Name = s.Name }).ToList();
                 List<Students> students =
-                    db.Students.Select(s => new Students { ClassName = className, Id = s.Id, FullName = s.FullName }).ToList();
+                    db.Students.Where(s => s.ClassName == className).ToList();
                 List<SubjectGradeModel> subjectGrades =
                     db.SubjectGrade.Select(s => new SubjectGradeModel { Date = s.Date, Grade = s.Grade, SubjectName = subjectName }).ToList();
                 StudentGradeOnSubjectModel studentGradeOnSubject =
