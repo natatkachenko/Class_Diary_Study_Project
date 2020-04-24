@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestProject.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TestProject.ViewModels
 {
@@ -10,6 +11,7 @@ namespace TestProject.ViewModels
     {
         public IEnumerable<Students> Students { get; set; }
         public IEnumerable<SubjectGradeModel> SubjectGrades { get; set; }
-        public IEnumerable<Subjects> Subjects { get; set; }
+        public SelectList Subjects { get; set; }
+        public SelectList Classes { get; set; }
     }
 }
