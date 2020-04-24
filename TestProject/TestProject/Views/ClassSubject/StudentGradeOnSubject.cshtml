@@ -1,26 +1,29 @@
-﻿@using TestProject.Models
-@using TestProject.ViewModels
-@model StudentGradeOnSubjectModel
+﻿@model TestProject.ViewModels.StudentGradeOnSubjectModel
 @{
     ViewBag.Title = "Оценки учеников класса";
 }
 
-<form asp-controller="ClassSubject" asp-action="StudentGradeOnSubject" class="form-inline">
-    <label>Выберите предмет:</label>
-    <select name="subjectName" class="form-control">
-        @foreach(Subjects subjects in Model.Subjects)
-        {
-            <option value="@subjects.Name">@subjects.Name</option>
-        }
-    </select>
-    <input type="submit" />
+<form method="get">
+    <div class="form-inline form-group">
+        <label class="custom-control-label">Выберите класс: </label>
+        <select name="className" asp-items="Model.Classes" class="form-control"></select>
+    </div>
+    <div class="form-inline form-group">
+        <label class="custom-control-label">Выберите предмет: </label>
+        <select name="subjectName" asp-items="Model.Subjects" class="form-control"></select>
+        <input type="submit" value="Фильтр" />
+    </div>
 </form>
 <br />
 <table class="table">
     <tr>
         <td>Номер ученика</td>
         <td>ФИО</td>
-        @foreach (SubjectGradeModel date in Model.SubjectGrades)
+        @foreach (var subject in Model.SubjectGrades)
+        {
+            <td>Предмет</td>
+        }
+        @foreach (var date in Model.SubjectGrades)
         {
             <td>@date.Date.ToShortDateString()</td>
         }
@@ -30,7 +33,11 @@
         <tr>
             <td>@students.Id</td>
             <td>@students.FullName</td>
-            @foreach (SubjectGradeModel subjectGrade in Model.SubjectGrades)
+            @foreach (var subjectGrade in Model.SubjectGrades)
+            {
+                <td>@subjectGrade.SubjectName</td>
+            }
+            @foreach (var subjectGrade in Model.SubjectGrades)
             {
                 <td>@subjectGrade.Grade</td>
             }

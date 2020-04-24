@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
 using TestProject.Services;
@@ -40,21 +41,26 @@ namespace TestProject.Controllers
         // вывод оценок студентов опредеоенного класса с фильтрацией по предметам
         public IActionResult StudentGradeOnSubject(string className, string subjectName)
         {
-            if (className != null && subjectName != null)
+            if (className != null)
             {
-                List<Subjects> subjects = 
-                    db.Subjects.Select(s => new Subjects { Name = s.Name }).ToList();
+                List<Subjects> subjects = db.Subjects.ToList();
+                List<Classes> classes = db.Classes.ToList();
                 List<Students> students =
                     db.Students.Where(s => s.ClassName == className).ToList();
                 List<SubjectGradeModel> subjectGrades =
-                    db.SubjectGrade.Select(s => new SubjectGradeModel { Date = s.Date, Grade = s.Grade, SubjectName = subjectName }).ToList();
+                    db.SubjectGrade.Select(s => new SubjectGradeModel { Date = s.Date, Grade = s.Grade, SubjectName = s.SubjectName }).ToList();
+
                 StudentGradeOnSubjectModel studentGradeOnSubject =
                     new StudentGradeOnSubjectModel
                     {
-                        Subjects = subjects,
+                        Subjects = new SelectList(subjects, "Name", "Name"),
+                        Classes = new SelectList(classes, "Name", "Name"),
                         Students = students,
                         SubjectGrades = subjectGrades
                     };
+                if (subjectName != null)
+                    studentGradeOnSubject.Students = students.Where(s => s.ClassName == className);
+                    studentGradeOnSubject.SubjectGrades = subjectGrades.Where(s => s.SubjectName == subjectName);
                 return View(studentGradeOnSubject);
             }
             return NotFound();
