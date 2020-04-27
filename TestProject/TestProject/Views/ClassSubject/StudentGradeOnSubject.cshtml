@@ -1,4 +1,4 @@
-﻿@model TestProject.ViewModels.StudentGradeOnSubjectModel
+﻿@model TestProject.ViewModels.StudentGradeOnSubjectViewModel
 @{
     ViewBag.Title = "Оценки учеников класса";
 }
@@ -19,28 +19,19 @@
     <tr>
         <td>Номер ученика</td>
         <td>ФИО</td>
-        @foreach (var subject in Model.SubjectGrades)
-        {
-            <td>Предмет</td>
-        }
-        @foreach (var date in Model.SubjectGrades)
+        <td>Предмет</td>
+        @foreach (var date in Model.Students)
         {
             <td>@date.Date.ToShortDateString()</td>
         }
     </tr>
-    @foreach (Students students in Model.Students)
+    @foreach (TestProject.ViewModels.StudentGradeModel students in Model.Students)
     {
         <tr>
-            <td>@students.Id</td>
+            <td>@students.StudentID</td>
             <td>@students.FullName</td>
-            @foreach (var subjectGrade in Model.SubjectGrades)
-            {
-                <td>@subjectGrade.SubjectName</td>
-            }
-            @foreach (var subjectGrade in Model.SubjectGrades)
-            {
-                <td>@subjectGrade.Grade</td>
-            }
+            <td>@students.SubjectName</td>
+            <td>@students.Grade</td>
         </tr>
     }
 </table>

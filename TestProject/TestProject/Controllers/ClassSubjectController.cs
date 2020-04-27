@@ -45,22 +45,19 @@ namespace TestProject.Controllers
             {
                 List<Subjects> subjects = db.Subjects.ToList();
                 List<Classes> classes = db.Classes.ToList();
-                List<Students> students =
-                    db.Students.Where(s => s.ClassName == className).ToList();
-                List<SubjectGradeModel> subjectGrades =
-                    db.SubjectGrade.Select(s => new SubjectGradeModel { Date = s.Date, Grade = s.Grade, SubjectName = s.SubjectName }).ToList();
+                IQueryable<StudentGradeModel> students =(IQueryable<StudentGradeModel>) db.Students.FromSqlInterpolated
+                    ($"Select Students.ClassName, Students.StudentID, Students.FullName, SubjectGrade.SubjectName, SubjectGrade.Date, SubjectGrade.Grade From Students Left Join SubjectGrade On Students.StudentID=SubjectGrade.StudentID Order By Students.StudentID")
+                    .ToList();
 
-                StudentGradeOnSubjectModel studentGradeOnSubject =
-                    new StudentGradeOnSubjectModel
+                StudentGradeOnSubjectViewModel studentGradeOnSubject =
+                    new StudentGradeOnSubjectViewModel
                     {
                         Subjects = new SelectList(subjects, "Name", "Name"),
                         Classes = new SelectList(classes, "Name", "Name"),
-                        Students = students,
-                        SubjectGrades = subjectGrades
+                        Students = students
                     };
                 if (subjectName != null)
-                    studentGradeOnSubject.Students = students.Where(s => s.ClassName == className);
-                    studentGradeOnSubject.SubjectGrades = subjectGrades.Where(s => s.SubjectName == subjectName);
+                    studentGradeOnSubject.Students = students.Where(s => s.ClassName == className && s.SubjectName == subjectName);
                 return View(studentGradeOnSubject);
             }
             return NotFound();
