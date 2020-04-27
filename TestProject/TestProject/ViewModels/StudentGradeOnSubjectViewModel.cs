@@ -7,10 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TestProject.ViewModels
 {
-    public class StudentGradeOnSubjectModel
+    public class StudentGradeOnSubjectViewModel
     {
-        public IEnumerable<Students> Students { get; set; }
-        public IEnumerable<SubjectGradeModel> SubjectGrades { get; set; }
+        public IEnumerable<StudentGradeModel> Students { get; set; }
         public SelectList Subjects { get; set; }
         public SelectList Classes { get; set; }
     }
