@@ -41,23 +41,20 @@ namespace TestProject.Controllers
         // вывод оценок студентов опредеоенного класса с фильтрацией по предметам
         public IActionResult StudentGradeOnSubject(string className, string subjectName)
         {
+            IQueryable<SubjectGrade> subjectGrades = db.SubjectGrade.Include(s => s.Students);
             if (className != null)
             {
                 List<Subjects> subjects = db.Subjects.ToList();
                 List<Classes> classes = db.Classes.ToList();
-                IQueryable<StudentGradeModel> students =(IQueryable<StudentGradeModel>) db.Students.FromSqlInterpolated
-                    ($"Select Students.ClassName, Students.StudentID, Students.FullName, SubjectGrade.SubjectName, SubjectGrade.Date, SubjectGrade.Grade From Students Left Join SubjectGrade On Students.StudentID=SubjectGrade.StudentID Order By Students.StudentID")
-                    .ToList();
 
                 StudentGradeOnSubjectViewModel studentGradeOnSubject =
                     new StudentGradeOnSubjectViewModel
                     {
                         Subjects = new SelectList(subjects, "Name", "Name"),
                         Classes = new SelectList(classes, "Name", "Name"),
-                        Students = students
                     };
                 if (subjectName != null)
-                    studentGradeOnSubject.Students = students.Where(s => s.ClassName == className && s.SubjectName == subjectName);
+                    //studentGradeOnSubject.Students = students.Where(s => s.ClassName == className && s.SubjectName == subjectName);
                 return View(studentGradeOnSubject);
             }
             return NotFound();
