@@ -9,7 +9,7 @@ namespace TestProject.ViewModels
 {
     public class StudentGradeOnSubjectViewModel
     {
-        public IEnumerable<StudentGradeModel> Students { get; set; }
+        public IEnumerable<SubjectGrade> subjectGrades { get; set; }
         public SelectList Subjects { get; set; }
         public SelectList Classes { get; set; }
     }

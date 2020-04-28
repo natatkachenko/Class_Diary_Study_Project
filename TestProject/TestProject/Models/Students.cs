@@ -8,5 +8,11 @@ namespace TestProject.Models
         public string ClassName { get; set; }
         public int Id { get; set; }
         public string FullName { get; set; }
+
+        public List<SubjectGrade> subjectGrades { get; set; }
+        public Students()
+        {
+            subjectGrades = new List<SubjectGrade>();
+        }
     }
 }

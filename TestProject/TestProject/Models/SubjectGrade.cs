@@ -10,5 +10,7 @@ namespace TestProject.Models
         public DateTime Date { get; set; }
         public int Grade { get; set; }
         public string SubjectName { get; set; }
+
+        public Students Students { get; set; }
     }
 }
