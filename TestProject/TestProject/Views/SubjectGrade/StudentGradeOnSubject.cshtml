@@ -20,17 +20,16 @@
         <td>Номер ученика</td>
         <td>ФИО</td>
         <td>Предмет</td>
-        @foreach (var date in Model.Students)
-        {
-            <td>@date.Date.ToShortDateString()</td>
-        }
+        <td>Дата</td>
+        <td>Оценка</td>
     </tr>
-    @foreach (TestProject.ViewModels.StudentGradeModel students in Model.Students)
+    @foreach (var students in Model.SubjectGrades)
     {
         <tr>
-            <td>@students.StudentID</td>
-            <td>@students.FullName</td>
+            <td>@students.StudentId</td>
+            <td>@students.Students.FullName</td>
             <td>@students.SubjectName</td>
+            <td>@students.Date.ToShortDateString()</td>
             <td>@students.Grade</td>
         </tr>
     }

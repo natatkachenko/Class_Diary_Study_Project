@@ -51,11 +51,13 @@ namespace TestProject.Models
                 entity.Property(e => e.FullName)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.ClassName).HasMaxLength(50);
             });
 
             modelBuilder.Entity<SubjectGrade>(entity =>
             {
-                entity.HasKey(e => new { e.Id, e.StudentId, e.SubjectName })
+                entity.HasKey(e => new { e.Id, e.ClassName, e.StudentId, e.SubjectName })
                     .HasName("PK_SubjectGrade");
 
                 entity.Property(e => e.Id)
@@ -69,6 +71,14 @@ namespace TestProject.Models
                 entity.Property(e => e.SubjectName)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.ClassName).HasMaxLength(50);
+
+                modelBuilder.Entity<SubjectGrade>()
+                .HasOne(s => s.Students)
+                .WithMany(st => st.subjectGrades)
+                .HasForeignKey(s => new { s.ClassName, s.StudentId })
+                .HasConstraintName("FK_SubjectGradeStudents");
             });
 
             modelBuilder.Entity<Subjects>(entity =>
