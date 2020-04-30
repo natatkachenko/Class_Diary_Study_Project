@@ -1,0 +1,18 @@
+﻿@model TestProject.Models.ClassSubject
+@{
+    ViewBag.Title = "Добавление нового класса, изучающего предмет";
+}
+
+<form asp-action="Add" asp-controller="ClassSubject">
+    <div class="form-group">
+        <label asp-for="SubjectName" class="custom-control-label">Предмет:</label>
+        <select asp-for="SubjectName" asp-items="ViewBag.Subjects"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="ClassName" class="custom-control-label">Класс:</label>
+        <select asp-for="ClassName" asp-items="ViewBag.Classes"></select>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Добавить" />
+    </div>
+</form>

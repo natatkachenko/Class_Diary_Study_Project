@@ -10,7 +10,9 @@
     @foreach (var studentClass in Model)
     {
         <tr>
-            <td><a asp-action="StudentGradeOnSubject" asp-controller="ClassSubject" asp-route-className="@studentClass.ClassName">@studentClass.ClassName</a></td>
+            <td><a asp-action="Index" asp-controller="Students" asp-route-name="@studentClass.ClassName">@studentClass.ClassName</a></td>
+            <td><a asp-action="Delete" asp-controller="ClassSubject" asp-route-className="@studentClass.ClassName" asp-route-subjectName="@studentClass.SubjectName">Удалить</a></td>
         </tr>
     }
 </table>
+<a asp-action="Add">Добавить</a>
