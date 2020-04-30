@@ -1,0 +1,24 @@
+﻿@model TestProject.Models.ClassSubject
+@{
+    ViewBag.Title = "Удаление класса, изучающего предмет";
+}
+
+<div>
+    <dl>
+        <dt>Предмет:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.SubjectName)
+        </dd>
+        <dt>Класс:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.ClassName)
+        </dd>
+    </dl>
+    <div>
+        <form asp-controller="ClassSubject" asp-action="Delete" asp-route-classname="@Model.ClassName" asp-route-subjectName="@Model.SubjectName">
+            <div class="form-group">
+                <input type="submit" value="Удалить" />
+            </div>
+        </form>
+    </div>
+</div>

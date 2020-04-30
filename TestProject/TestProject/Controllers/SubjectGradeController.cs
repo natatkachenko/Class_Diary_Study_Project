@@ -153,7 +153,7 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
-        // вывод оценок студентов опредеоенного класса с фильтрацией по предметам
+        // вывод оценок студентов определенного класса с фильтрацией по предметам
         public IActionResult StudentGradeOnSubject(string className, int? studentId, string subjectName)
         {
             IQueryable<SubjectGrade> subjectGrades = db.SubjectGrade.Include(s => s.Students);

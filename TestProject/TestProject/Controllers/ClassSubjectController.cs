@@ -36,5 +36,51 @@ namespace TestProject.Controllers
             }
             return NotFound();
         }
+
+        // вызов формы для добавления класса, изучающего предмет
+        public IActionResult Add()
+        {
+            SelectList subjects = new SelectList(db.Subjects, "Name", "Name");
+            ViewBag.Subjects = subjects;
+            SelectList classes = new SelectList(db.Classes, "Name", "Name");
+            ViewBag.Classes = classes;
+            return View();
+        }
+
+        // добавление нового класса, изучающего предмет в бд
+        [HttpPost]
+        public async Task<IActionResult> Add(ClassSubject classSubject)
+        {
+            db.ClassSubject.Add(classSubject);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", new { name = classSubject.SubjectName });
+        }
+
+        // показ удаляемого класса, изучающего предмет
+        [HttpGet]
+        public async Task<IActionResult> Delete(string subjectName, string className)
+        {
+            if (subjectName != null && className != null)
+            {
+                ClassSubject classSubject =
+                    await db.ClassSubject.FirstOrDefaultAsync(c => c.SubjectName == subjectName && c.ClassName == className);
+                if (classSubject != null)
+                    return View(classSubject);
+            }
+            return NotFound();
+        }
+
+        // удаление класса, изучающего предмет из бд
+        [HttpPost]
+        public async Task<IActionResult> Delete(ClassSubject classSubject)
+        {
+            if (classSubject != null)
+            {
+                db.ClassSubject.Remove(classSubject);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index", new { name = classSubject.SubjectName });
+            }
+            return NotFound();
+        }
     }
 }
