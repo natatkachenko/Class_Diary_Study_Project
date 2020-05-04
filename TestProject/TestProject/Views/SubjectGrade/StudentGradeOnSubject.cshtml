@@ -2,7 +2,11 @@
 @{
     ViewBag.Title = "Оценки учеников класса";
 }
+<style>
+    #right {text-align: right;}
+</style>
 
+<h3>Журнал класса</h3>
 <form method="get">
     <div class="form-inline form-group">
         <label class="custom-control-label">Выберите класс: </label>
@@ -21,7 +25,7 @@
         <td>ФИО</td>
         <td>Предмет</td>
         <td>Дата</td>
-        <td>Оценка</td>
+        <td id="right">Оценка</td>
     </tr>
     @foreach (var students in Model.SubjectGrades)
     {
@@ -30,7 +34,18 @@
             <td>@students.Students.FullName</td>
             <td>@students.SubjectName</td>
             <td>@students.Date.ToShortDateString()</td>
-            <td>@students.Grade</td>
+            <td id="right">@students.Grade</td>
         </tr>
     }
+    <tr>
+        <td colspan="4"><b>Итоги</b></td>
+        @if (Model.SubjectGrades.Any())
+        {
+            <td id="right"><b>Средняя оценка:  @Model.SubjectGrades.Average(g => g.Grade)</b></td>
+        }
+        else
+        {
+            <td id="right"><b>Средняя оценка:  0</b></td>
+        }
+    </tr>
 </table>
