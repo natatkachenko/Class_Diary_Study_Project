@@ -96,6 +96,28 @@ namespace TestProject.Models
                     .HasName("PK_Users");
             });
 
+            //роли пользователей
+            string adminRoleName = "admin";
+            string studentRoleName = "student";
+            string teacherRoleName = "teacher";
+            string directorRoleName = "director";
+            string parentRoleName = "parent";
+
+            string adminEmail = "TestProjectAdmin@protonmail.com";
+            string adminPassword = "123456";
+
+            // добавляем роли
+            Role adminRole = new Role { Id = 1, Name = adminRoleName };
+            Role studentRole = new Role { Id = 2, Name = studentRoleName };
+            Role teacherRole = new Role { Id = 3, Name = teacherRoleName };
+            Role directorRole = new Role { Id = 4, Name = directorRoleName };
+            Role parentRole = new Role { Id = 5, Name = parentRoleName };
+            User adminUser = new User { Id = 1, Email = adminEmail, Password = adminPassword, RoleId = adminRole.Id };
+
+            modelBuilder.Entity<Role>()
+                .HasData(new Role[] { adminRole, studentRole, teacherRole, directorRole, parentRole });
+            modelBuilder.Entity<User>().HasData(new User[] { adminUser });
+
             OnModelCreatingPartial(modelBuilder);
         }
 
