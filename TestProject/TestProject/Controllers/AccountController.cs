@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TestProject.Models;
 using TestProject.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -23,23 +24,11 @@ namespace TestProject.Controllers
             db = context;
         }
 
-        private async Task Authenticate(string userName)
-        {
-            // создаем один claim
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
-            };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity id = 
-                new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
-        }
-
         [HttpGet]
         public IActionResult Register()
         {
+            SelectList roles = new SelectList(db.Roles, "Name", "Name");
+            ViewBag.Roles = roles;
             return View();
         }
 
@@ -54,11 +43,14 @@ namespace TestProject.Controllers
                 if (user == null)
                 {
                     // добавляем пользователя в бд
-                    db.Users.Add(new User { Email = model.Email, Password = model.Password });
+                    user = new User { Email = model.Email, Password = model.Password, roleName = model.roleName };
+                    Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == model.roleName);
+
+                    db.Users.Add(user);
                     await db.SaveChangesAsync();
 
                     // аутентификация
-                    await Authenticate(model.Email);
+                    await Authenticate(user);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -67,6 +59,24 @@ namespace TestProject.Controllers
             }
             return View(model);
         }
+
+        private async Task Authenticate(User user)
+        {
+            // создаем один claim
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+            };
+            // создаем объект ClaimsIdentity
+            ClaimsIdentity id = 
+                new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            // установка аутентификационных куки
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+
+        
+
+        
 
         [HttpGet]
         public IActionResult Login()
