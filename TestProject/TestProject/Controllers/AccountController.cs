@@ -45,6 +45,8 @@ namespace TestProject.Controllers
                     // добавляем пользователя в бд
                     user = new User { Email = model.Email, Password = model.Password, roleName = model.roleName };
                     Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == model.roleName);
+                    if (userRole != null)
+                        user.Role = userRole;
 
                     db.Users.Add(user);
                     await db.SaveChangesAsync();
@@ -60,24 +62,6 @@ namespace TestProject.Controllers
             return View(model);
         }
 
-        private async Task Authenticate(User user)
-        {
-            // создаем один claim
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
-            };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity id = 
-                new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
-        }
-
-        
-
-        
-
         [HttpGet]
         public IActionResult Login()
         {
@@ -90,18 +74,33 @@ namespace TestProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = 
-                    await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+                User user =
+                    await db.Users.Include(u=>u.Role).FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
                 if (user != null)
                 {
                     // аутентификация
-                    await Authenticate(model.Email);
+                    await Authenticate(user);
 
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return View(model);
+        }
+
+        private async Task Authenticate(User user)
+        {
+            // создаем один claim
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name)
+            };
+            // создаем объект ClaimsIdentity
+            ClaimsIdentity id = 
+                new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            // установка аутентификационных куки
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
         public async Task<IActionResult> Logout()

@@ -107,12 +107,12 @@ namespace TestProject.Models
             string adminPassword = "123456";
 
             // добавляем роли
-            Role adminRole = new Role { Id = 1, Name = adminRoleName };
-            Role studentRole = new Role { Id = 2, Name = studentRoleName };
-            Role teacherRole = new Role { Id = 3, Name = teacherRoleName };
-            Role directorRole = new Role { Id = 4, Name = directorRoleName };
-            Role parentRole = new Role { Id = 5, Name = parentRoleName };
-            User adminUser = new User { Id = 1, Email = adminEmail, Password = adminPassword, RoleId = adminRole.Id };
+            Role adminRole = new Role { Name = adminRoleName };
+            Role studentRole = new Role { Name = studentRoleName };
+            Role teacherRole = new Role { Name = teacherRoleName };
+            Role directorRole = new Role { Name = directorRoleName };
+            Role parentRole = new Role { Name = parentRoleName };
+            User adminUser = new User { Id = 1, Email = adminEmail, Password = adminPassword, roleName = adminRole.Name };
 
             modelBuilder.Entity<Role>()
                 .HasData(new Role[] { adminRole, studentRole, teacherRole, directorRole, parentRole });

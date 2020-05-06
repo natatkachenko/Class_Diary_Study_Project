@@ -11,7 +11,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">TestProject</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">eDiary</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,6 +28,33 @@
                             <a class="nav-link text-white" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                </div>
+                <div class="navbar-collapse collapse">
+                    @if (User.IsInRole("admin"))
+                    {
+                        <p>Администратор @User.Identity.Name</p>
+                        <a asp-action="Logout" asp-controller="Account">Выход</a>
+                    }
+                    else if (User.IsInRole("student"))
+                    {
+                        <p>Ученик @User.Identity.Name</p>
+                        <a asp-action="Logout" asp-controller="Account">Выход</a>
+                    }
+                    else if (User.IsInRole("teacher"))
+                    {
+                        <p>Учитель @User.Identity.Name</p>
+                        <a asp-action="Logout" asp-controller="Account">Выход</a>
+                    }
+                    else if (User.IsInRole("director"))
+                    {
+                        <p>Директор @User.Identity.Name</p>
+                        <a asp-action="Logout" asp-controller="Account">Выход</a>
+                    }
+                    else if (User.IsInRole("parent"))
+                    {
+                        <p>Родитель @User.Identity.Name</p>
+                        <a asp-action="Logout" asp-controller="Account">Выход</a>
+                    }
                 </div>
             </div>
         </nav>
