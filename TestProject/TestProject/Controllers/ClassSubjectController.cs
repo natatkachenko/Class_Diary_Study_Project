@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
 using TestProject.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestProject.Controllers
 {
@@ -37,6 +38,7 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin, director")]
         // вызов формы для добавления класса, изучающего предмет
         public IActionResult Add()
         {
@@ -47,6 +49,7 @@ namespace TestProject.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin, director")]
         // добавление нового класса, изучающего предмет в бд
         [HttpPost]
         public async Task<IActionResult> Add(ClassSubject classSubject)
@@ -56,6 +59,7 @@ namespace TestProject.Controllers
             return RedirectToAction("Index", new { name = classSubject.SubjectName });
         }
 
+        [Authorize(Roles = "admin, director")]
         // показ удаляемого класса, изучающего предмет
         [HttpGet]
         public async Task<IActionResult> Delete(string subjectName, string className)
@@ -70,6 +74,7 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin, director")]
         // удаление класса, изучающего предмет из бд
         [HttpPost]
         public async Task<IActionResult> Delete(ClassSubject classSubject)

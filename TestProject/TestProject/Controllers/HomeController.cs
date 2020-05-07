@@ -33,12 +33,14 @@ namespace TestProject.Controllers
             return Content("Пользователь не аутентифицирован");
         }
 
+        [Authorize(Roles = "admin, director")]
         // вызов формы для добавления класса
         public IActionResult Add()
         {
             return View();
         }
 
+        [Authorize(Roles = "admin, director")]
         // добавление нового класса в бд
         [HttpPost]
         public async Task<IActionResult> Add(Classes classes)
@@ -49,6 +51,7 @@ namespace TestProject.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "admin, director")]
         // показ удаляемого класса
         [HttpGet]
         public async Task<IActionResult> Delete(string name)
@@ -63,6 +66,7 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin, director")]
         // удаление класса из бд
         [HttpPost]
         public async Task<IActionResult> Delete(Classes classes)

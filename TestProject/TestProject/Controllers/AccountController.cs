@@ -38,13 +38,13 @@ namespace TestProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user =
+                Users user =
                     await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (user == null)
                 {
                     // добавляем пользователя в бд
-                    user = new User { Email = model.Email, Password = model.Password, roleName = model.roleName };
-                    Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == model.roleName);
+                    user = new Users { Email = model.Email, Password = model.Password, roleName = model.roleName };
+                    Roles userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == model.roleName);
                     if (userRole != null)
                         user.Role = userRole;
 
@@ -74,7 +74,7 @@ namespace TestProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user =
+                Users user =
                     await db.Users.Include(u=>u.Role).FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
                 if (user != null)
                 {
@@ -88,7 +88,7 @@ namespace TestProject.Controllers
             return View(model);
         }
 
-        private async Task Authenticate(User user)
+        private async Task Authenticate(Users user)
         {
             // создаем один claim
             var claims = new List<Claim>

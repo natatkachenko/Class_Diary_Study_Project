@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
 using NLog;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestProject.Controllers
 {
@@ -27,12 +28,14 @@ namespace TestProject.Controllers
             return View(db.Subjects.ToList());
         }
 
+        [Authorize(Roles = "admin, director")]
         // вызов формы для добавления предмета
         public IActionResult Add()
         {
             return View();
         }
 
+        [Authorize(Roles = "admin, director")]
         // добавление нового предмета в бд
         [HttpPost]
         public async Task<IActionResult> Add(Subjects subjects)
@@ -43,6 +46,7 @@ namespace TestProject.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "admin, director")]
         // показ удаляемого предмета
         [HttpGet]
         public async Task<IActionResult> Delete(string name)
@@ -57,6 +61,7 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin, director")]
         // удаление предмета из бд
         [HttpPost]
         public async Task<IActionResult> Delete(Subjects subjects)

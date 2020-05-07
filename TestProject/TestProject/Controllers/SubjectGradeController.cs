@@ -39,6 +39,7 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin, teacher")]
         // вызов формы для добавления новой оценки
         public IActionResult Add()
         {
@@ -51,6 +52,7 @@ namespace TestProject.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin, teacher")]
         // добавление новой оценки в бд
         [HttpPost]
         public async Task<IActionResult> Add(SubjectGrade subjectGrade)
@@ -79,6 +81,7 @@ namespace TestProject.Controllers
             return RedirectToAction("Grade", new { id = subjectGrade.StudentId });
         }
 
+        [Authorize(Roles = "admin, teacher")]
         // вызов формы для ввода оценки
         [HttpGet]
         public async Task<IActionResult> Edit(int? id, string className, int? studentId, string subjectName)
@@ -94,6 +97,7 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin, teacher")]
         // сохранение оценки в бд
         [HttpPost]
         public async Task<IActionResult> Edit(SubjectGrade subjectGrade)
@@ -122,6 +126,7 @@ namespace TestProject.Controllers
             return RedirectToAction("Grade", new { id = subjectGrade.StudentId });
         }
 
+        [Authorize(Roles = "admin, teacher")]
         // показ удаляемой оценки ученика 
         [HttpGet]
         public async Task<IActionResult> Delete(int? studentId, string className, int? id, string subjectName)
@@ -137,6 +142,7 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin, teacher")]
         // удаление оценки ученика из бд
         [HttpPost]
         public async Task<IActionResult> Delete(SubjectGrade subjectGrade)
