@@ -17,8 +17,8 @@ namespace TestProject.Models
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<SubjectGrade> SubjectGrade { get; set; }
         public virtual DbSet<Subjects> Subjects { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Roles> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -90,33 +90,36 @@ namespace TestProject.Models
                 entity.Property(e => e.Name).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.Id)
                     .HasName("PK_Users");
+
+                entity.Property(e => e.Id)
+                .HasColumnName("ID")
+                .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Email).IsRequired();
+                entity.Property(e => e.Password).IsRequired();
+
+                entity.Property(e => e.roleName)
+                .HasMaxLength(50)
+                .IsRequired();
+
+                modelBuilder.Entity<Users>()
+                .HasOne(r => r.Role)
+                .WithMany(u => u.Users)
+                .HasForeignKey(u => u.roleName)
+                .HasConstraintName("FK_UsersRoles");
             });
 
-            //роли пользователей
-            string adminRoleName = "admin";
-            string studentRoleName = "student";
-            string teacherRoleName = "teacher";
-            string directorRoleName = "director";
-            string parentRoleName = "parent";
+            modelBuilder.Entity<Roles>(entity =>
+            {
+                entity.HasKey(e => e.Name)
+                    .HasName("PK_Roles");
 
-            string adminEmail = "TestProjectAdmin@protonmail.com";
-            string adminPassword = "123456";
-
-            // добавляем роли
-            Role adminRole = new Role { Name = adminRoleName };
-            Role studentRole = new Role { Name = studentRoleName };
-            Role teacherRole = new Role { Name = teacherRoleName };
-            Role directorRole = new Role { Name = directorRoleName };
-            Role parentRole = new Role { Name = parentRoleName };
-            User adminUser = new User { Id = 1, Email = adminEmail, Password = adminPassword, roleName = adminRole.Name };
-
-            modelBuilder.Entity<Role>()
-                .HasData(new Role[] { adminRole, studentRole, teacherRole, directorRole, parentRole });
-            modelBuilder.Entity<User>().HasData(new User[] { adminUser });
+                entity.Property(e => e.Name).HasMaxLength(50);
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }

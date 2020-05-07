@@ -10,6 +10,7 @@ using TestProject.Models;
 using TestProject.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NLog;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestProject.Controllers
 {
@@ -40,6 +41,7 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin, director")]
         // вызов формы для добавления ученика класса
         public IActionResult Add()
         {
@@ -48,6 +50,7 @@ namespace TestProject.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin, director")]
         // добавление нового ученика класса в бд
         [HttpPost]
         public async Task<IActionResult> Add(Students student)
@@ -58,6 +61,7 @@ namespace TestProject.Controllers
             return RedirectToAction("Index", new { name = student.ClassName });
         }
 
+        [Authorize(Roles = "admin, director")]
         // показ удаляемого ученика класса
         [HttpGet]
         public async Task<IActionResult> Delete(string classname, int? id)
@@ -72,6 +76,7 @@ namespace TestProject.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin, director")]
         // удаление ученика класса из бд
         [HttpPost]
         public async Task<IActionResult> Delete(Students student)

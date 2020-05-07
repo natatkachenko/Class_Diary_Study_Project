@@ -6,13 +6,13 @@ using TestProject.Models;
 
 namespace TestProject.Models
 {
-    public class Role
+    public class Roles
     {
         public string Name { get; set; }
-        public List<User> Users { get; set; }
-        public Role()
+        public List<Users> Users { get; set; }
+        public Roles()
         {
-            Users = new List<User>();
+            Users = new List<Users>();
         }
     }
 }
