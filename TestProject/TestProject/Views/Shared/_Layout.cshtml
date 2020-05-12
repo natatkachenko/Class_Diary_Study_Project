@@ -6,9 +6,6 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <style>
-        #position {background-position: right top;}
-    </style>
 </head>
 <body>
     <header>
@@ -20,7 +17,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 mr-auto">
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-controller="Home" asp-action="Index">Главная</a>
                         </li>
@@ -30,32 +27,30 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="navbar-item" id="position">
+                        <li class="navbar-item ml-auto">
                             @if (User.IsInRole("admin"))
                             {
                                 <p class="text-white">Администратор @User.Identity.Name</p>
-                                <a class="nav-link text-primary" asp-action="Logout" asp-controller="Account">Выход</a>
                             }
                             else if (User.IsInRole("student"))
                             {
                                 <p class="text-white">Ученик @User.Identity.Name</p>
-                                <a class="nav-link text-primary" asp-action="Logout" asp-controller="Account">Выход</a>
                             }
                             else if (User.IsInRole("teacher"))
                             {
                                 <p class="text-white">Учитель @User.Identity.Name</p>
-                                <a class="nav-link text-primary" asp-action="Logout" asp-controller="Account">Выход</a>
                             }
                             else if (User.IsInRole("director"))
                             {
                                 <p class="text-white">Директор @User.Identity.Name</p>
-                                <a class="nav-link text-primary" asp-action="Logout" asp-controller="Account">Выход</a>
                             }
                             else if (User.IsInRole("parent"))
                             {
                                 <p class="text-white">Родитель @User.Identity.Name</p>
-                                <a class="nav-link text-primary" asp-action="Logout" asp-controller="Account">Выход</a>
                             }
+                        </li>
+                        <li class="nav-item ml-auto">
+                            <a class="nav-link text-warning" asp-action="Logout" asp-controller="Account">Выход</a>
                         </li>
                     </ul>
                 </div>
