@@ -19,8 +19,8 @@
             <td>@subjectGrade.Id</td>
             <td>@subjectGrade.Date</td>
             <td>@subjectGrade.SubjectName</td>
-            <td id="right"><a asp-action="Edit" asp-controller="SubjectGrade" asp-route-id="@subjectGrade.Id" asp-route-studentId="@subjectGrade.StudentId" asp-route-subjectName="@subjectGrade.SubjectName">@subjectGrade.Grade</a></td>
-            <td><a asp-action="Delete" asp-controller="SubjectGrade" asp-route-studentId="@subjectGrade.StudentId" asp-route-id="@subjectGrade.Id" asp-route-subjectName="@subjectGrade.SubjectName">Удалить</a></td>
+            <td id="right"><a asp-action="Edit" asp-controller="SubjectGrade" asp-route-id="@subjectGrade.Id" asp-route-classname="@subjectGrade.ClassName" asp-route-studentId="@subjectGrade.StudentId" asp-route-subjectName="@subjectGrade.SubjectName">@subjectGrade.Grade</a></td>
+            <td><a asp-action="Delete" asp-controller="SubjectGrade" asp-route-studentId="@subjectGrade.StudentId" asp-route-classname="@subjectGrade.ClassName" asp-route-id="@subjectGrade.Id" asp-route-subjectName="@subjectGrade.SubjectName">Удалить</a></td>
             <td><a asp-action="StudentGradeOnSubject" asp-controller="SubjectGrade" asp-route-className="@subjectGrade.ClassName" asp-route-studentId="@subjectGrade.StudentId" asp-route-subjectName="@subjectGrade.SubjectName">Перейти в журнал классов</a></td>
         </tr>
     }
