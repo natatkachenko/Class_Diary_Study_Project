@@ -50,6 +50,9 @@ namespace TestProject
             // внедрение зависимости SubjectService
             services.AddTransient<SubjectService>();
 
+            // внедрение зависимости HomeService для unit-теста
+            services.AddTransient<IHomeService, HomeService>();
+
             services.AddControllersWithViews();
         }
 
