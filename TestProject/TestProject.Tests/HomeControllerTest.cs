@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TestProject.Controllers;
 using TestProject.Models;
+using TestProject.Services;
 using Xunit;
 using Moq;
 using System.Linq;
@@ -16,19 +17,19 @@ namespace TestProject.Tests
         public void IndexReturnsAViewResultWithAListOfClasses()
         {
             //Arrange
-            var mock = new Mock<DiaryDBContext>();
-            mock.Setup(db => db.Classes.ToList()).Returns(GetTestClasses());
-            var controller = new HomeController(mock.Object);
+            var service = new Mock<IHomeService>();
+            var classes = GetTestClasses();
+            service.Setup(s => s.AllClasses()).Returns(classes);
+            var controller = new HomeController();
 
             //Act
-            var result = controller.Index();
+            var result = controller.GetClasses();
+            var count = result.Count();
 
             //Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Classes>>(viewResult.Model);
-            Assert.Equal(GetTestClasses().Count, model.Count());
+            Assert.Equal(count, classes.Count());
         }
-        private List<Classes> GetTestClasses()
+        private IEnumerable<Classes> GetTestClasses()
         {
             var classes = new List<Classes>
             {

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TestProject.Models;
 using NLog;
+using TestProject.Services;
 
 namespace TestProject.Controllers
 {
@@ -17,10 +18,16 @@ namespace TestProject.Controllers
     {
         DiaryDBContext db;
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly IHomeService homeService;
 
         public HomeController(DiaryDBContext context)
         {
             db = context;
+        }
+
+        public IEnumerable<Classes> GetClasses([FromServices] IHomeService homeService)
+        {
+            return homeService.AllClasses();
         }
 
         // вывод списка классов
